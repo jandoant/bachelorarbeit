@@ -69,21 +69,29 @@
 
 % -- Bibliografiestil
 \usepackage[
-	sorting=none, 		%Literaturverzeichnis wird in der Reihenfolge, in der die Referenzen genannt werden
-						% sortiert isbn=false,
-	url=false, 			%keine Angabe der URL
-	style=numeric,
+	% Literaturverzeichnis wird in der Reihenfolge, in der die Referenzen genannt werden sortiert
+	sorting=none,
+	% keine Angabe der URL 		
+	url=false,
+	% Übersicht Biblatex-Styles:
+	% https://de.sharelatex.com/learn/Biblatex_bibliography_styles 			
+	style=ieee,
+	% keine Angabe der ISBN 			
 	isbn=false,
+	% Datumsangabe nur für das Erscheiningsjahr
 	date=year,
-	maxbibnames=6,      %maximal 6 Namen in der Literaturliste 
-	minbibnames=3,      %mindestens 3 Namen in der Literaturliste 
-	backend=biber]{biblatex}
+	% maximal 6 Namen in der Literaturliste
+	maxbibnames=6,
+	% mindestens 3 Namen in der Literaturliste    
+	minbibnames=3,      
+	% Verwendung von biber.exe
+	backend=biber
+	]{biblatex}
+
 % -- Pfad zur .bib-Datei	
 \addbibresource{bib/bib.bib} 
 
 \usepackage{tabularx}
-
-
 
 %% DOKUMENT
 \begin{document}
