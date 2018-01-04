@@ -110,8 +110,15 @@
 % -- Pfad zur .bib-Datei	
 \addbibresource{bib/bib.bib} 
 
-% -- Tabellenaket
+% -- Tabellenpaket
 \usepackage{tabularx}
+
+% -- Verzeichnisse zum Inhaltsverzeichnis hinzufügen
+\usepackage[
+	% Inhaltsverzeichnis selbst nicht im Inhaltsverzeichnis aufführen 
+	nottoc
+	]{tocbibind}
+
 
 %% DOKUMENT
 \begin{document}
@@ -148,6 +155,9 @@
 
 % -- Literaturverzeichnis
 \pagestyle{fancy}
-\printbibliography
+\printbibliography[
+	% Literaturverzeichnis im Inhaltsverzeichnis anzeigen 
+	heading=bibintoc
+	]
 
 \end{document}
