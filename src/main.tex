@@ -1,0 +1,121 @@
+%% Präambel
+
+% -- Dokumentenklasse
+\documentclass[11pt,a4paper,oneside,ngerman]{article}
+
+% -- Meta-Daten
+\newcommand{\mytitle}{Der Titel meiner Arbeit}
+\newcommand{\myname}{Jan Doant}
+
+% -- Seitenränder
+\usepackage[left=30mm,right=20mm,top=25mm,bottom=20mm]{geometry}
+
+% -- Zeilenabstand
+\usepackage[onehalfspacing]{setspace}
+
+% -- keine Einrückung der ersten Zeile eines neuen Absatzes 
+\setlength{\parindent}{0em}
+
+%% -- Gestaltung Kopf- und Fußzeile
+% -- Kopfzeile
+\usepackage{fancyhdr}
+\addtolength{\headheight}{3pt}
+\lhead{\mytitle}
+% -- Fußzeile
+\lfoot{\myname}
+\cfoot{}
+\rfoot{Seite~\thepage}  
+
+%% -- deutsches Sprachpaket
+\usepackage[ngerman]{babel}
+% -- Umlaute
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+% -- deutsche Anführungszeichen
+\usepackage[babel,german=quotes]{csquotes}
+
+% -- Mathematikpakete
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+% -- Grafikpaket
+\usepackage{graphicx}
+
+% -- Verweise werden im Dokument klickbar
+\usepackage{hyperref}
+\usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
+\hypersetup{
+	pdfauthor={\myname},
+	pdftitle={\mytitle},
+	colorlinks = true, 
+	linkcolor=[RGB]{63 81 181},
+    citecolor= [RGB]{76 175 80},
+    urlcolor=[RGB]{0 76 153},
+}
+
+% -- Verweise automatisieren
+%\usepackage{cleveref}
+\usepackage{varioref}
+\usepackage{prettyref}
+% -- prettyref-Befehl konfigurieren
+\newrefformat{fig}{Abbildung \vref{#1}}
+\newrefformat{tab}{Tabelle \vref{#1}}
+
+% -- Anzeigen der verwendeten Labels (nur im Dev-Modus verwenden)
+\usepackage[inner, 			% Information wird am inneren Rand angezeigt 
+			%final			% blendet Informationen aus, wenn aktiv 
+			]{showlabels}
+
+% -- Bibliografiestil
+\usepackage[
+	sorting=none, 		%Literaturverzeichnis wird in der Reihenfolge, in der die Referenzen genannt werden
+						% sortiert isbn=false,
+	url=false, 			%keine Angabe der URL
+	style=numeric,
+	isbn=false,
+	date=year,
+	maxbibnames=6,      %maximal 6 Namen in der Literaturliste 
+	minbibnames=3,      %mindestens 3 Namen in der Literaturliste 
+	backend=biber]{biblatex}
+% -- Pfad zur .bib-Datei	
+\addbibresource{bib/bib.bib} 
+
+%% Dokument
+\begin{document}
+
+% -- Titelseite
+\pagestyle{empty}
+\include{chapters/00_titelseite}
+\newpage
+
+% -- Selbstständigkeitserklärung
+\pagestyle{empty}
+\include{chapters/00_selbststaendigkeitserklaerung}
+\newpage
+
+% -- Inhaltsverzeichnis
+\pagestyle{empty}
+\include{chapters/00_inhaltsverzeichnis}
+\newpage
+
+% --Sandbox
+\pagestyle{fancy}
+\include{chapters/sandbox}
+\newpage
+
+% -- Einführung
+\pagestyle{fancy}
+\include{chapters/1_einfuehrung}
+\newpage
+
+% -- Abbildungsverzeichnis
+\pagestyle{fancy}
+\listoffigures
+\newpage
+
+% -- Literaturverzeichnis
+\pagestyle{fancy}
+\printbibliography
+
+\end{document}
