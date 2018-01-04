@@ -1,7 +1,16 @@
 %% PRÄAMBEL
 
 % -- Dokumentenklasse
-\documentclass[11pt,a4paper,oneside,ngerman]{article}
+\documentclass[
+	% Schriftgröße
+	11pt,
+	% Papierformat
+	a4paper,
+	% Seitenverteilung
+	oneside,
+	% Sprache
+	ngerman
+	]{article}
 
 % -- Meta-Daten
 \newcommand{\mytitle}{Der Titel meiner Arbeit}
@@ -42,16 +51,23 @@
 % -- Grafikpaket
 \usepackage{graphicx}
 
+% -- Verweise 
 % -- Verweise werden im Dokument klickbar
 \usepackage{hyperref}
+% -- Einfärben von Verweisen
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \hypersetup{
+	% Meta-Informationen, die in der PDF-Datei gespeichert werden
 	pdfauthor={\myname},
 	pdftitle={\mytitle},
-	colorlinks = true, 
+	% Einfärben der Schrift
+	colorlinks = true,
+	% Farbe von Verknüpfungen im Text 
 	linkcolor=[RGB]{63 81 181},
-    citecolor= [RGB]{76 175 80},
-    urlcolor=[RGB]{0 76 153},
+	% Farbe von Quellenverweisen
+	citecolor= [RGB]{76 175 80},
+	% Farbe von URLs
+	urlcolor=[RGB]{0 76 153},
 }
 
 % -- Verweise automatisieren
@@ -63,9 +79,12 @@
 \newrefformat{tab}{Tabelle \vref{#1}}
 
 % -- Anzeigen der verwendeten Labels (nur im Dev-Modus verwenden)
-\usepackage[inner, 			% Information wird am inneren Rand angezeigt 
-			%final			% blendet Informationen aus, wenn aktiv 
-			]{showlabels}
+\usepackage[
+	% Label wird am inneren Rand angezeigt
+	inner,
+	% blendet Label aus, wenn final aktiv 			 
+	%final			 
+	]{showlabels}
 
 % -- Bibliografiestil
 \usepackage[
@@ -91,6 +110,7 @@
 % -- Pfad zur .bib-Datei	
 \addbibresource{bib/bib.bib} 
 
+% -- Tabellenaket
 \usepackage{tabularx}
 
 %% DOKUMENT
