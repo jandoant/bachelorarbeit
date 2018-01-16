@@ -53,7 +53,7 @@
 
 % -- Verweise 
 % -- Verweise werden im Dokument klickbar
-\usepackage{hyperref}
+\usepackage[pdfpagelabels]{hyperref}
 % -- Einfärben von Verweisen
 \usepackage[dvipsnames,svgnames,x11names,hyperref]{xcolor}
 \hypersetup{
@@ -127,11 +127,13 @@
 \begin{document}
 
 % -- Titelseite
+\hypersetup{pageanchor=false}
 \pagestyle{empty}
 \include{chapters/00_titelseite}
 \newpage
 
 % -- Selbstständigkeitserklärung
+\hypersetup{pageanchor=true}
 \pagestyle{empty}
 \include{chapters/00_selbststaendigkeitserklaerung}
 \newpage
