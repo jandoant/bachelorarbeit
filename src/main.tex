@@ -12,6 +12,9 @@
 	ngerman
 	]{article}
 
+% -- Schriftart Latin Modern verwenden (Vektor)
+\usepackage{lmodern}
+
 % -- Meta-Daten
 \newcommand{\mytitle}{Messtechnische Abbildung typischer Fertigungsabweichungen}
 \newcommand{\myname}{Jan Doant}
@@ -22,8 +25,8 @@
 % -- Zeilenabstand
 \usepackage[onehalfspacing]{setspace}
 
-% -- keine Einrückung der ersten Zeile eines neuen Absatzes 
-\setlength{\parindent}{0em}
+% -- Deutsche Absatztrennung
+\usepackage{parskip}
 
 %% -- Gestaltung Kopf- und Fußzeile
 % -- Kopfzeile
@@ -36,11 +39,11 @@
 \rfoot{Seite~\thepage}  
 
 %% -- deutsches Sprachpaket
+% -- deutsche Silbentrennung
 \usepackage[ngerman]{babel}
 % -- Umlaute
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{ae,aecompl}
 % -- deutsche Anführungszeichen
 \usepackage[babel,german=quotes]{csquotes}
 
@@ -102,13 +105,13 @@
 	% maximal 6 Namen in der Literaturliste
 	maxbibnames=6,
 	% mindestens 3 Namen in der Literaturliste    
-	minbibnames=3,      
+	minbibnames=3,
 	% Verwendung von biber.exe
 	backend=biber
 	]{biblatex}
 
-% -- Pfad zur .bib-Datei	
-\addbibresource{bib/lit.bib} 
+% -- Pfad zur .bib-Datei
+\addbibresource{bib/lit.bib}
 
 % -- Tabellenpaket
 \usepackage{tabularx}
@@ -121,7 +124,6 @@
 
 % -- TikZ
 \usepackage{tikz}
-
 
 %% DOKUMENT
 \begin{document}
@@ -143,14 +145,19 @@
 \include{chapters/00_inhaltsverzeichnis}
 \newpage
 
-% --Sandbox
-\pagestyle{fancy}
-\include{chapters/sandbox}
-\newpage
+%% --Sandbox
+%\pagestyle{fancy}
+%\include{chapters/sandbox}
+%\newpage
 
 % -- Einführung
 \pagestyle{fancy}
 \include{chapters/1_einfuehrung}
+\newpage
+
+% -- Oberflächen
+\pagestyle{fancy}
+\include{chapters/2_oberflaechen}
 \newpage
 
 % -- Abbildungsverzeichnis
@@ -162,7 +169,6 @@
 \pagestyle{fancy}
 \printbibliography[
 	% Literaturverzeichnis im Inhaltsverzeichnis anzeigen 
-	heading=bibintoc
-	]
+	heading=bibintoc]
 
 \end{document}
