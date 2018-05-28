@@ -80,10 +80,6 @@
 % -- Grafikpaket
 \usepackage{graphicx}
 
-\newcommand*{\quelle}{% 
-	\footnotesize Quelle: 
-} 
-
 % -- Verweise 
 % -- Verweise werden im Dokument klickbar
 \usepackage[pdfpagelabels]{hyperref}
@@ -145,6 +141,7 @@
 
 % -- Tabellenpaket
 \usepackage{tabularx}
+\renewcommand{\arraystretch}{1.5}
 
 % -- Verzeichnisse zum Inhaltsverzeichnis hinzufügen
 \usepackage[
@@ -187,6 +184,11 @@
 % -- Oberflächen
 \pagestyle{fancy}
 \include{chapters/2_oberflaechen}
+\newpage
+
+% -- Oberflächen
+\pagestyle{fancy}
+\include{chapters/3_typischeabweichungen}
 \newpage
 
 % -- Abbildungsverzeichnis
