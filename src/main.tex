@@ -103,6 +103,7 @@
 %\usepackage{cleveref}
 \usepackage{varioref}
 \usepackage{prettyref}
+
 % -- prettyref-Befehl konfigurieren
 \newrefformat{fig}{Abbildung \vref{#1}}
 \newrefformat{tab}{Tabelle \vref{#1}}
@@ -152,18 +153,27 @@
 % -- TikZ
 \usepackage{tikz}
 
+% -- Listings
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Codebeispiel}
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	xleftmargin=2cm,
+	language=[x86masm]Assembler,
+	showstringspaces=false,
+	basicstyle=\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black}
+}
+
 %% DOKUMENT
 \begin{document}
+	
 % -- Titelseite
 \pagenumbering{Alph}
 \pagestyle{empty}
 \include{chapters/00_titelseite}
-\newpage
-
-% -- Selbstständigkeitserklärung
-\pagenumbering{arabic}
-\pagestyle{empty}
-\include{chapters/00_selbststaendigkeitserklaerung}
 \newpage
 
 % -- Inhaltsverzeichnis
@@ -176,25 +186,56 @@
 %\include{chapters/sandbox}
 %\newpage
 
-% -- Einführung
+\pagenumbering{arabic}
+\pagestyle{empty}
+\include{chapters/00_aufgabenstellung}
+\newpage
+
+
+
+% -- Einführung / Motivation
 \pagestyle{fancy}
 \include{chapters/1_einfuehrung}
 \newpage
 
-% -- Oberflächen
+% -- Grundlagen / Stand der Technik
 \pagestyle{fancy}
-\include{chapters/2_oberflaechen}
+\include{chapters/2_0_grundlagen}
 \newpage
 
-% -- Oberflächen
+% -- Handlungsbedarf / Problem
+
+
+% -- Lösungsansatz/Idee
 \pagestyle{fancy}
-\include{chapters/3_typischeabweichungen}
+\include{chapters/4_loesungsansatz}
+\newpage
+
+% -- Umsetzung des Lösungsansatzes / Ergebnisse
+\pagestyle{fancy}
+\include{chapters/5_umsetzung}
+\newpage
+
+% -- Bewertung des Lösungsansatzes / der Ergebnisse
+\pagestyle{fancy}
+\include{chapters/6_bewertung}
+\newpage
+
+% -- Zusammenfassung und Ausblick
+\pagestyle{fancy}
+\include{chapters/7_ausblick}
 \newpage
 
 % -- Abbildungsverzeichnis
 \pagestyle{fancy}
 \listoffigures
 \newpage
+
+% -- Selbstständigkeitserklärung
+\pagestyle{empty}
+\include{chapters/00_selbststaendigkeitserklaerung}
+\newpage
+
 
 % -- Literaturverzeichnis
 \pagestyle{fancy}
