@@ -1,17 +1,31 @@
 \section{Lösungsansatz}
 
-\subsection{Lösungsschritte}
+\subsection{Lösungsidee}
 
 Um die gegebene Aufgabenstellung lösen zu können soll eine Software erstellt werden, die in der Lage ist, eine gegebene Idealgeometrie mit ausgewählten Verformungsfunktionen zu beaufschlagen. Als Ergebnis soll die entsprechend deformierte Geometrie ausgegeben werden. 
 
-Dafür ist es notwendig, dass die Idealgeometrie vom Nutzer in Form eines CAD-Models bereitgestellt wird. Dieses soll im Anschluss durch das entwickelte Programm in Form einer Punktewolke diskretisiert werden. Das ist erforderlich, weil die Beschreibung der Geometrie durch das Programm in einer kontinuierlichen Form erfolgt. Messtechnisch sind allerdings die Raumkoordinaten einzelner Messpunkte von Bedeutung. Eine Diskretisierung kann verschieden genau von statten gehen. Um eine variable Anpassung des Programms an die Erfordernisse des Nutzers zu ermöglichen soll die Anzahl der ausgegebenen Ergebnispunkte steuerbar sein. Der Benutzer soll die Möglichkeit erhalten, die dafür notwendigen Diskretisierungsparamameter innerhalb des Programms für jedes Geometrieelement selbst zu bestimmen um, die für den jeweiligen Anwendungsfall erforderliche Dichte der Punktewolke anzupassen.
+Dafür sind vier Hauptschritte notwendig: 
 
-Weiterhin ist es notwendig, dass jeder einzelne Punkt der entstanden Punktewolke dem jeweiligen Geometrieelement, zu dem er gehört, zugeordnet werden kann. Dies Anforderung ergibts sich, da nach erfolgter Diskretisierung der Geometrieelemente, der Nutzer für jede seperate Fläche des Körpers die gewünschten Deformationen in Form von Funktionen  beaufschlagen können soll. Dadurch werden die einzelnen Elemente der Punktewolke, so verändert, dass sie als Ergebnis die verformte Geometrie repräsentieren. 
+\begin{enumerate}
+	\item Zerlegung der Eingabegeometrie in einzelne Geometrieelemente
+	\item Erstellung einer idealen Punktewolke für jedes Geometrieelement
+	\item Verschiebung dieser Punkte entsprechend der Deformationsfunktion
+	\item Ausgabe der veränderten Punktewolken jedes Geometrieelements 
+\end{enumerate}
+
+\subsection{Beschreibung der Lösungsschritte}
+
+Die Eingabegeometrie soll vom Nutzer in Form eines CAD-Models bereitgestellt werden. Dabei handelt es sich um eine Datei im STEP-Format. Die Eingabegeometrie beschreibt die Idealgeometrie des zu betrachtenden Bauteils.
+
+Dieses Idealgeometrie soll im Anschluss durch das entwickelte Programm in Form einer Punktewolke diskretisiert werden. Das ist erforderlich, weil die Beschreibung der Geometrie durch das Programm in einer kontinuierlichen Form erfolgt. Messtechnisch sind allerdings die Raumkoordinaten einzelner Messpunkte von Bedeutung. Eine Diskretisierung kann verschieden detailliert von statten gehen. Um eine variable Anpassung des Programms an die Erfordernisse des Nutzers zu ermöglichen soll die Anzahl der ausgegebenen Ergebnispunkte steuerbar sein. Der Benutzer wird die Möglichkeit erhalten, die dafür notwendigen Diskretisierungsparamameter innerhalb des Programms für jedes Geometrieelement selbst zu bestimmen. Dadurch kann die für den jeweiligen Anwendungsfall erforderliche Dichte der Punktewolke angepasst werden.
+
+Es notwendig, dass jeder einzelne Punkt der entstanden Punktewolke dem jeweiligen Geometrieelement, zu dem er gehört, zugeordnet werden kann. Dies Anforderung ergibts sich, da nach erfolgter Diskretisierung der Geometrieelemente, der Nutzer für jede seperate Fläche des Körpers die gewünschten Deformationen in Form von Funktionen  beaufschlagen können soll. Dadurch werden die einzelnen Elemente der Punktewolke, so verändert, dass sie als Ergebnis die verformte Geometrie repräsentieren. 
 Das Programm soll die Punktewolke des verformten Bauteils ausgeben. Dies kann als Ausgangspunkt für weitere Untersuchungen im Rahmen einer Toleranzsimulation verwendet werden. 
 
 In der folgenden Abbildung ist der oben beschriebene Ablaufplan des Programm grafisch dargestellt. Die konkrete Umsetzung der einzelnen Schritte ist in Abbildung XYZ dargelegt.        
  
 \subsection{Eingabegeometrie} 
+\label{sec:eingabegeometrie}
 
 \subsubsection{Verwendung von STEP-Dateien}
  
@@ -39,16 +53,16 @@ Des Weiteren ist die Klasse, zu der die Entität gehört direkt nach dem Gleichh
 
 Um die grundsätzliche Beschreibung von geometrischen Entitäten in STEP Dateien aufzueigen sollen zwei einfache Beispiele herangezogen werden.
 
-Als sehr einfaches Beispiel lässt sich das Codebeispiel \ref{lst:simplestp} herbeiziehen. Es beschreibt einen Punkt in Kartesischen Koordinaten (Klasse "`CARTESIAN\_POINT"') mit einer ID von 173 sowie den Koordinaten x=10,0mm, y=15.0mm und z=30,0mm. Weiterhin ist zu erkennen, dass hierbei das Attribut "`name"' leer ist. Dies ist bei den meisten geometrischen Entitäten der Fall. Das ist allerdings nicht von großer Bedeutung, da, wie oben beschrieben die ID als Identifikator genutzt wird.    
+Als sehr einfaches Beispiel lässt sich das \prettyref{lis:simplestp} herbeiziehen. Es beschreibt einen Punkt in Kartesischen Koordinaten (Klasse "`CARTESIAN\_POINT"') mit einer ID von 173 sowie den Koordinaten x=10,0mm, y=15.0mm und z=30,0mm. Weiterhin ist zu erkennen, dass hierbei das Attribut "`name"' leer ist. Dies ist bei den meisten geometrischen Entitäten der Fall. Das ist allerdings nicht von großer Bedeutung, da, wie oben beschrieben die ID als Identifikator genutzt wird.    
 
-\begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung eines Punktes in STEP, label=lst:simplestp]
+\begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung eines Punktes in STEP, label=lis:simplestp]
 #173=CARTESIAN_POINT('',(10.,15.,30.));
 \end{lstlisting}
 
-Ein etwas komplexeres Beispiel, was die in einer STEP-Datei festgehaltene Geometrie-Struktur aufzeigen soll lässt sich in Codebeispiel \ref{lst:exmpllinestp} beobachten. Dieser Ausschnitt aus einer STEP-Datei zeigt die Beziehung zwischen den Entitäten. 
+Ein etwas komplexeres Beispiel, was die in einer STEP-Datei festgehaltene Geometrie-Struktur aufzeigen soll lässt sich in \prettyref{lis:exmpllinestp} beobachten. Dieser Ausschnitt aus einer STEP-Datei zeigt die Beziehung zwischen den Entitäten. 
 
 
-\begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung einer Linie in STEP, label=lst:exmpllinestp]
+\begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung einer Linie in STEP, label=lis:exmpllinestp]
 #38=LINE('',#183,#50);
 ...
 #50=VECTOR('',#154,10.);

@@ -12,6 +12,9 @@
 	ngerman
 	]{article}
 
+
+\usepackage[ngerman]{babel}
+
 % -- Schriftart Latin Modern verwenden (Vektor)
 %\usepackage{lmodern}
 
@@ -74,8 +77,11 @@
 \usepackage[babel,german=quotes]{csquotes}
 
 % -- Mathematikpakete
-\usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{esvect}
+% -- Vektordarstellung
+\usepackage{esvect}
 
 % -- Grafikpaket
 \usepackage{graphicx}
@@ -105,8 +111,12 @@
 \usepackage{prettyref}
 
 % -- prettyref-Befehl konfigurieren
+\newrefformat{sec}{Abschnitt \vref{#1}}
 \newrefformat{fig}{Abbildung \vref{#1}}
 \newrefformat{tab}{Tabelle \vref{#1}}
+\newrefformat{lis}{Codebeispiel \vref{#1}}
+\newrefformat{eq}{Formel \vref{#1}}
+
 
 % -- Anzeigen der verwendeten Labels (nur im Dev-Modus verwenden)
 \usepackage[
