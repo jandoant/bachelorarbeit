@@ -79,7 +79,6 @@ Definiert einen Kreis im dreidimensionalen Raum. Die Position (Mittelpunkt) und 
 	
 	\includegraphics[width=0.7\linewidth]{img/circle_entity.pdf}
 	
-	
 	\caption{Visualisierung CIRCLE}
 	\label{fig:circleentity}
 \end{figure} 
@@ -177,53 +176,86 @@ Die im Programmablauf aufgerufene Methode \textit{parseFile()} der Klasse \texti
 
 \subsection{Diskretisierung der Körperflächen}
 
-Um die Diskretisierung der Oberflächen zu realisieren wird über eine Änderung des Koordinatensystems realisiert. Ziel ist dabei die Umwandlung Punkte der Körpfläche in ein lokales flächenorientiertes Koordinatensystem (Mapping). Dabei werden alle Punkte der jeweiligen Fläche einer Koordinatentransformation unterzogen. So besitzt jeder Punkt eine Beschreibung im Weltkoordinatensystem mit Werten in x, y und z-Richtung. Gleichzeitig gelten aber für ebendiesen Punkt auch Definitionen bezüglich des lokalen Koordinatensystems in u-, v- und w-Richtung. Die folgende Abbildung verdeutlicht dies.
+Die Diskretisierung der Oberflächen wird unter Einführung eines lokalen Koordinatensystems für jede einzelne Körperfläche (\textit{ADVANCED\_FACE}) realisiert.
+Ziel ist dabei die Umwandlung der Punkte der Körpfläche, welche durch die STEP-Datei in globalen Koordinaten ausgedrückt sind, in ein lokales Koordinatensystem zu überführen und im Anschluss zu verändern. Dabei werden alle Punkte der jeweiligen Fläche einer Koordinatentransformation unterzogen. So besitzt jeder Punkt, neben seiner Beschreibung im Weltkoordinatensystem mit Werten in x, y und z-Richtung, gleichzeitig auch Definitionen bezüglich eines lokalen Koordinatensystems in u-, v- und w-Richtung. Die folgende \prettyref{fig:basetrafo} verdeutlicht dies. 
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/basetrafo.pdf}
+	
+	\caption{Beschreibung eines Punktes in verschiedenen Koordinatensystemen}
+	\label{fig:basetrafo}
+	
+\end{figure}
+
+Das lokale Koordinatensystem ist spezifisch für jede Körperfläche und ermöglicht eine generalisierte Bearbeitung der diskretisierten Punkte. Jede dreidimensionale Körperfläche wird so in eine zweidimensionale Fläche mit Ausdehnung in u-, und v-Richtung überführt. Die w-Koordinate, welche senkrecht zur Fläche zeigt ist dabei für die Idealgeometrie w=0. Dieses Verfahren wird als "`UV-Mapping"' bezeichnet.  Mit der Anwendung der Deformationsfunktionen ändert sich die Koordinate der Punkte in dieser Richtung. Eine Rücktransformation in das globale Koordinatensystem bildet diese Veränderung an der deformierten Geometrie ab.       
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/uvwmapping.pdf}
+	
+	\caption{UV-Mapping einer Körperfläche}
+	\label{fig:uvwmapping}
+	
+\end{figure}
  
 \subsubsection{Basistransformation}
 
-Um eine Basistransformation zwischen Welt- und lokalem Koordinatensystem durchführen zu können ist es notwendig, sowohl die Einheitsbasisvektoren des Weltkoordinatensystem, als auch die des lokalen Systems zu kennen. Die Einheitsbasisvektoren des Weltkoordiantensystems sind stets die selben und werden wie folgt definiert:
+Um eine Basistransformation zwischen Welt- und lokalem Koordinatensystem durchführen zu können ist es notwendig, sowohl die Basiseinheitsvektoren des Weltkoordinatensystem, als auch die des lokalen Systems zu kennen. Die Basiseinheitsvektoren des globalen Koordinatensystems sind für alle Punkte des STEP-Modells stets die selben und werden wie folgt definiert.
 
 \begin{singlespace}
-\begin{equation}
-\begin{aligned}
-\vv{e_{x}}=\begin{pmatrix}
-1 \\ 
-0 \\ 
-0
-\end{pmatrix}  
-&& 
-\vv{e_{y}}=\begin{pmatrix}
-0 \\ 
-1 \\ 
-0
-\end{pmatrix}  
-&& 
-\vv{e_{z}}=\begin{pmatrix}
-0 \\ 
-0 \\ 
-1
-\end{pmatrix} 
-\end{aligned}
-\end{equation}
+	\begin{equation}
+	\begin{aligned}
+	\vv{e_{x}}=\begin{pmatrix}
+	1 \\ 
+	0 \\ 
+	0
+	\end{pmatrix}  
+	&& 
+	\vv{e_{y}}=\begin{pmatrix}
+	0 \\ 
+	1 \\ 
+	0
+	\end{pmatrix}  
+	&& 
+	\vv{e_{z}}=\begin{pmatrix}
+	0 \\ 
+	0 \\ 
+	1
+	\end{pmatrix} 
+	\end{aligned}
+	\end{equation}
 \end{singlespace}
 
 Die Menge aller Punkte einer Ebene wird in der Geometrie durch die Formel
 
-\begin{equation}
+\begin{equation}\label{eq:plane}
 E: \vv{x} = \vv{x_{0}} + r \cdot \vv{x_{R1}} + s \cdot \vv{x_{R2}}  
 \end{equation}
 
-eindeutig definiert. Dabei steht $\vv{x}$ für einen beliebigen Punkt der Ebene. $\vv{x_{0}}$ beschreibt den Ortsvektor, $\vv{x_{R1}}$ und $\vv{x_{R2}}$  die Richtungsvektoren und $r$ und $s$ beliebige Laufparameter um die Lage des Punktes als Linearkombination dieser Vektoren genau zu beschreiben.
+eindeutig festgelegt. Dabei steht $\vv{x}$ für einen beliebigen Punkt der Ebene. $\vv{x_{0}}$ beschreibt den Ortsvektor, $\vv{x_{R1}}$ und $\vv{x_{R2}}$  die Richtungsvektoren und $r$ und $s$ sind beliebige Laufparameter um die Lage des Punktes als Linearkombination der Richtungsvektoren genau zu beschreiben.
 
-Die Basiseinheitsvektoren $\vv{e_{u}}$, $\vv{e_{v}}$ und $\vv{e_{w}}$ des lokalen Koordinatensystems werden aus der \textit{AXIS2\_PLACEMENT\_3D} des Flächenelementes gebildet, auf dem die \textit{ADVANCED\_FACE} liegt. Die erste \textit{DIRECTION} der \textit{AXIS2\_PLACEMENT\_3D} entspricht dem Normalenvektor der Ebene, die zweite \textit{DIRECTION} einem Richtungsvektor.
-
-Bei ebenen Flächen sind dies die beiden normalisierten Richtungsvektoren der Ebene, auf der sie liegen. Der Koordinatenursprung liegt in dem Punkt, der durch den Ortsvektor $\vv{x_{0}}$ der Ebene beschrieben wird. In der \textit{AXIS2\_PLACEMENT\_3D} des Flächenelementes sind aber nur der Normalenvektor $\vv{n}$ der Ebene und ein Richtungsvektor beschrieben. Der fehlende Richtungsvektor wird durch die Bildung des Kreuzproduktes der beiden für ein rechtshändiges System nach \prettyref{eq:crossproduct} erzeugt.
+Die Position einer \textit{PLANE} wird durch eine \textit{AXIS2\_PLACEMENT\_3D} beschrieben. Daraus lassen sich die Elemente einer Ebenenbeschreibung, wie in \prettyref{eq:plane} dargestellt, auslesen. 
+Dabei entspricht der CARTESIAN\_POINT der Positionsbeschreibung dem Ortsvektor. Dieser stellt gleichzeitig den Koordinatenursprung des lokalen Koordinatensystems dar. Die erste \textit{DIRECTION} dieser Positionsbeschreibung entspricht dem normalisierten Normalenvektor der Ebene $\vv{n}$, die zweite \textit{DIRECTION} einem normalisierten Richtungsvektor $\vv{x_{R1}}$. Da in der Lagebeschreibung der Ebene nur der Normalenvektor und ein Richtungsvektor dieser Ebene beschrieben sind, wird der fehlende Richtungsvektor durch Bildung des Kreuzproduktes der beiden, für ein rechtshändiges System, nach \prettyref{eq:crossproduct} erzeugt.
 
 \begin{equation}\label{eq:crossproduct}
-	\vv{x_{R2}} = \vv{n} \times \vv{x_{R1}}
-\end{equation}
+\vv{x_{R2}} = \vv{n} \times \vv{x_{R1}}
+\end{equation}  
 
-Die Basisvektoren des lokalen Systems können somit entsprechend \prettyref{eq:basevectorsuvw}  gebildet werden.
+Ebenso, wie bei einer ebenen Fläche, die durch die STEP-Entität PLANE beschrieben wird, wird auch bei zylindrischen Flächen des Typs \textit{CYLINDRICAL\_SURFACE} die Ausrichtung des lokalen Koordinatensystems in einem \textit{AXIS2\_PLACEMENT\_3D} festgehalten. Dabei unterscheidet sich allerdings die Bedeutung der \textit{DIRECTION}s der Positionsbeschreibung. Der \textit{CARTESIAN\_POINT} des \textit{AXIS2\_PLACEMENT\_3D} beschreibt dabei die Position des Orstvektors der Fläche, die erste \textit{DIRECTION} die Richtung der Achse $\vv{n}$ des Zylinders und die zweite \textit{DIRECTION} $\vv{x_{R1}}$ liegt parallel zur radialen Richtung des Zylinders. Mit Hilfe der \prettyref{eq:crossproduct} lässt sich auch hier ein weiterer Vektor bilden, welcher rechtsorientiert senkrecht zu Achse und $\vv{x_{R1}}$ ebenfalls in radiale Richtung des Zylinder zeigt. 
+
+Die lokalen Basiseinheitsvektoren \begin{singlespace} $\vv{e_{u}}=\begin{pmatrix}
+	e_{u_x} & e_{u_y} & e_{u_z}
+	\end{pmatrix}^T $, 
+	$\vv{e_{v}}=\begin{pmatrix}
+	e_{u_x} & e_{u_y} & e_{u_z}
+	\end{pmatrix}^T$ und 
+	$\vv{e_{w}}=\begin{pmatrix}
+	e_{u_x} & e_{u_y} & e_{u_z}
+	\end{pmatrix}^T$ 
+\end{singlespace} können somit entsprechend \prettyref{eq:basevectorsuvw}  gebildet werden. Darüber wird definiert, in welche Richtung u-, v- und w-Koordinaten jeweils zeigen. 
 
 \begin{equation}\label{eq:basevectorsuvw}
 	\begin{aligned}
@@ -231,7 +263,7 @@ Die Basisvektoren des lokalen Systems können somit entsprechend \prettyref{eq:b
 	&& 
 	\vv{e_{v}}=\vv{x_{R2}}  
 	&& 
-	\vv{e_{w}}=\vv{x_{n}} 
+	\vv{e_{w}}=\vv{n} 
 	\end{aligned}
 \end{equation}
 
@@ -262,20 +294,123 @@ Die Basis des Weltkoordinatensystems ergibt sich analog zur Basismatrix $B_{UVW}
 Die Transformationsmatrix um einen Punkt vom globalen in das lokale Koordinatensystem der Ebene zu transformieren ergibt sich nach \prettyref{eq:trafoXYZ2UVW}.
 
 \begin{equation}\label{eq:trafoXYZ2UVW}
-T_{XYZ \rightarrow UVW} = B_{UVW}^{-1} \cdot B_{XYZ}  
+T_{xyz \rightarrow uvw} = B_{uvw}^{-1} \cdot B_{xyz}  
 \end{equation}   
 
-Die Transformationsmatrix um einen Punkt wieder aus dem lokalen Koordinatensystem der Ebene zurück in das globale System zu transformieren ergibt sich nach \prettyref{eq:trafoUVW2XYZ} aus der Inversen der Transformationsmatrix aus \prettyref{eq:trafoXYZ2UVW}.
+Die Transformationsmatrix, um einen Punkt wieder aus dem lokalen Koordinatensystem der Ebene zurück in das globale System zu überführen, ergibt sich nach \prettyref{eq:trafoUVW2XYZ} aus der Inversen der Transformationsmatrix aus \prettyref{eq:trafoXYZ2UVW}.
 
 \begin{equation}\label{eq:trafoUVW2XYZ}
-T_{UVW \rightarrow XYZ} = T_{XYZ \rightarrow UVW}^{-1} 
+T_{uvw \rightarrow xyz} = T_{xyz \rightarrow uvw}^{-1} 
 \end{equation}   
 
+Hat man einen Punkt $\vv{p_{xyz}}$ in globalen Koordinaten gegeben, so berechnet sich seine Position im lokalen Kordinatensystem entsprechend \prettyref{eq:pxyz2puvw}. 
 
+\begin{equation}\label{eq:pxyz2puvw}
+\vv{p_{uvw}}=T_{xyz \rightarrow uvw} \cdot \vv{p_{xyz}}
+\end{equation}
+
+Analog dazu berechnet man die Rücktransformation eines Punktes $\vv{p_{uvw}}$ vom lokalen Koordiantensystem in das globale Koordinatensystem. nach \prettyref{eq:trafoUVW2XYZ}
+  
+\begin{equation}\label{eq:trafoUVW2XYZ}
+\vv{p_{xyz}}=T_{uvw \rightarrow xyz} \cdot \vv{p_{uvw}}
+\end{equation}
+
+Die Berechnung einer speziellen Transformationsmatrix ist in den Klassen \textit{StpPlane}, sowie \textit{StpCylindricalFace}, welche sich im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} befinden, implementiert. Die Methode \textit{getXYZtoUVWTransformationMatrix()} ermittelt die Transformationsmatrix für die Umwandlung eines Punktes in lokale Koordinaten. Die Matrix zur Rücktransformation wird über die Methode \textit{getUVWtoXYZransformationMatrix()} berechnet. 
+Die Anwendung dieser Matrizen erfolgt in der Klasse \textit{StpCartesianPoint} im selben Projektordner. Die Methode \textit{baseTransform(Matrix transformationMatrix)} nimmt eine Transformationsmatrix entgegen und gibt einen entsprechend der Formeln \ref{eq:trafoUVW2XYZ} bzw. \ref{eq:trafoXYZ2UVW} transformierten Punkt aus. 
 
 \subsubsection{Diskretisierung zylindrischer Flächen}
 
+lalalalalalal
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/trafozylinder.pdf}
+	
+	\caption{Koordinatentransformation CYLINDRICAL\_SURFACE}
+	\label{fig:trafozylinder}
+	
+\end{figure}
+
+lalalalalala
+
 \subsubsection{Diskretisierung planarer Flächen}
+
+Planare \textit{ADVANCED\_FACE}s werden in STEP durch die \textit{PLANE} auf der sie liegen und einer bestimmten Anzahl an Umrandungen beschrieben. Die Menge aller Punkte, die zu dieser ADVANCED\_FACE gehören ergibt sich aus der Schnittmenge aller Punkte der PLANE und den Punkten innerhalb der positiven Umrandungen (\textit{FACE\_OUTER\_BOUND}s) ohne die Punkte, die innerhalb der negativen Umrandung liegen. 
+Dies ist durch folgende Abbildung zu visualisieren.
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/posnegbounds.pdf}
+	
+	\caption{Planare ADVANCED\_FACE mit negativen Umrandungen}
+	\label{fig:posnegbounds}
+	
+\end{figure}
+
+Bei der Diskretisierung planarer Flächen wird unterschieden zwischen kreisförmigen Umrandungen und Unmrandungen, die aus einem Polygon bestehen.
+
+Als erstes soll die Diskretisierung von positiven kreisförmigen Umrandungen beschrieben werden. Dazu wird die kreisförmige Fläche in Ringe und Segmente unterteilt. Der Nutzer kann für jede Umrandung die Anzahl dieser angeben und somit die Detaillierung der Diskretisierung steuern. Die Schnittpunkte dieser Elemente sollen als Objekte der Klasse \textit{StpCartesianPoint}s in der Punktewolke der Körperfläche gespeichert werden. 
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/discretcircle.pdf}
+	
+	\caption{Diskretisierungsmuster Kreis}
+	\label{fig:discretecircle}
+	
+\end{figure}
+
+Wie in Abschnitt XYZ beschrieben besteht eine einzelne Umrandung einer \textit{ADVANCED\_FACE} aus einem Kantenverbund (\textit{EDGE\_LOOP}). Bei kreisförmigen Umrandungen wird dieser Kantenverbund genau aus einer Kante des Typs \textit{CIRCLE} gebildet. Diese Entität enthält Informationen zur Position des Kreises (in Form einer \textit{AXIS2\_PLACEMENT\_3D}) und dessen Radius.
+Mit Kenntnis kann die Lage des Kreises bezogen auf das lokale Koordinatensystem bestimmt werden. Dazu muss auch der Mittelpunkt des Kreises in das lokale Koordinatensystem transformiert werden. Ausgehend vom Radius des zu diskretisierenden Kreises und der Angabe der Anzahl an geforderten Ringen, errechnet das Programm den radialen Abstand der Ringe zueinander. Aus der Anzahl der geforderten Segmente sind die in gleicher Weise auch die Öffnungswinkel der Segmente bekannt. Um nun die diskretisierte Punktemenge der Kreisfläche zu erzeugen, wird ein Startpunkt gewählt, welcher auf dem Kreis liegt. Dieser wird um den Mittelpunkt des Kreises und den Öffnungswinkel der Kreissegmente gedreht. Seine neue Position wird in der Punktewolke der betreffenden \textit{ADVANCED\_FACE} gespeichert. Danach wird dieser Vorgang wiederholt, bis die Summe der überstrichenen Öffnungswinkel 360° beträgt. Als Ergebnis dieses Vorgangs steht nun ein diskretisierter Ring mit dem Radius des Kreises. Nach Bildung des ersten Ringes wird ein neuer Startpunkt gewählt und von diesem aus analog ein weiterer Ring erzeugt. Dieser Vorgang wird so oft wiederholt, bis die geforderte Anzahl an Ringen hergestellt ist. 
+
+Die Diskretisierung positiver polygonaler Umrandungen geschieht ein wenig anders. Dabei sollen sowohl die Kanten als auch der Innenraum des Polygons entsprechend Abbildung XYZ in einem vom Nutzer wählbaren Abstand der Punkte  diskretisiert werden. Dazu sollen in einem ersten Schritt alle Kanten des Polygons im vorgegebenen Abstand unterteilt werden. Danach soll ein Punkteraster mit Punkten dieses Abstandes über das Innere des Polygons gelegt werden. Dazu ist es notwendig alle Eckpunkte, die das Polygon besitzt zu finden. Das geschieht über den Kantenverbund der (\textit{EDGE\_LOOP}) Umrandung. Dieser ist, anders als bei kreisförmigen Umrandungen aus mindestens 3 Kanten aufgebaut. Diese Kanten sind vom Typ \textit{LINE}. Aus der einzelnen Kante lassen sich sowohl Anfangs- als auch Endpunkt der \textit{LINE} auslesen. Somit lassen sich die Eckpunkte des Polygon extrahieren. Nachdem die Menge der Eckpunkte des Polygons ermittelt wurde, werden alle diese Punkte in das lokale Koordinatensystem der Ebene, unter Anwendung der Transformationsmatrix umgerechnet.
+Aus der Kenntnis der Eckpunkte kann nun ein Punkt entlang der Kanten im vorgegebenen Abstand bewegt werden. Nach jedem Einzelschritt wird der Punkt der Punktewolke der ADVANCED\_FACE hinzugefügt. 
+Um das Innere des Polygons zu diskretisieren muss zunächst das umgrenzende Rechteck gefunden werden. Innerhalb der Grenzen dieses Rechtecks wird ein Punkteraster im vorgegebenen Abstand erzeugt. Für jeden Punkt wird individuell entschieden, ob er inner- oder außerhalb des Polygons liegt. Liegt ein Punkt dieses Rasters innerhalb des Polygons, dann wird er zur Punktewolke der Körperfläche hinzugefügt.  
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.7\linewidth]{img/discretpolygon.pdf}
+	
+	\caption{Diskretisierungsmuster Poylgon}
+	\label{fig:discretpolygon}
+	
+\end{figure}
+
+Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygonal) liegen sollen aus der bestehenden Punktewolke der betreffenden \textit{ADVANCED\_FACE} entfernt werden. Dazu wird für jeden bestehenden Punkt geprüft ob er dies der Fall ist. Um allerdings die Kanten negativer Umrandungen in der Punktewolke zu behalten, werden diese entsprechend der Parameter unterteilt und der Punktwolke hinzugefügt.       
+
+
+
+
+
+
+
+
+   
+
+
+
+
+      
+
+
+
+
+  
+
+
+
+       
+ 
+
+
+
+
+
+
 
 \subsection{Deformation der Körperflächen}
 
