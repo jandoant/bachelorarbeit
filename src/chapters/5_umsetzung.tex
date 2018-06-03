@@ -9,13 +9,13 @@ Aus dem in Abschnitt \ref{sec:eingabegeometrie} beschriebenen zeilenweisen Aufba
 #ID=KLASSE(ATTRIBUTSLISTE);
 \end{lstlisting}
 
-Aufgrund dieses einheitlichen Musters lassen sie sich relativ einfach dekodieren und als Java-Klassen in Programmcode umwandeln um in einem weiteren Schritt die Struktur des Bauteils abzubilden.
+Aufgrund dieses einheitlichen Musters lassen sie sich relativ einfach decodieren und als Java-Klassen in Programmcodes umwandeln, um in einem weiteren Schritt die Struktur des Bauteils abzubilden.
 Das Ziel des ersten Schrittes in der Lösungsumsetzung besteht nun darin, aus einer einzelnen Zeile der STEP-Datei Java-Objekte zu bilden und mit den Daten aus der jeweiligen Zeile zu belegen.    
 
 \subsubsection{Implementierte STEP-Entitäten}
 
-Die verschiedenen Entitätstypen, die in einer STEP-Datei vohanden sein können sind in der STEP-Dokumentation [Referenz einfügen] aufgeführt. Die Attribute, welche zu jeder einzelnen Klasse gehören werden darin beschrieben.
-Da die Implementierung aller vorhandenen STEP-Klassen den Rahmen dieser Arbeit überschreiten würde, sind vorerst folgende Klassen im Programm umgesetzt. Es ist anzumerken, dass nicht jede Klasse eine Instanz bilden kann. Diese sogenannten abstrakten Klassen dienen zur Gruppierung von sich ähnlichen nicht abstrakten Klassen. Diese sind Bestandteil des Vererbungsprinzips der objektorientierten Programmierung in Java. Sie sind in der Liste als solche gekennzeichnet.  
+Die verschiedenen Entitätstypen, die in einer STEP-Datei vohanden sein können, sind in der STEP-Dokumentation [Referenz einfügen] aufgeführt. Die Attribute, welche zu jeder einzelnen Klasse gehören, werden darin beschrieben.
+Da die Implementierung aller vorhandenen STEP-Klassen den Rahmen dieser Arbeit überschreiten würde, sind vorerst folgende Klassen im Programm umgesetzt. Es ist anzumerken, dass nicht jede Klasse eine Instanz bilden kann. Diese sogenannten abstrakten Klassen dienen der Gruppierung von ähnlichen nicht abstrakten Klassen. Diese sind Bestandteil des Vererbungsprinzips der objektorientierten Programmierung in Java. Sie sind in der Liste als solche gekennzeichnet.  
 \begin{itemize}
 	\item REPRESENTATION\_ITEM (abstrakt)
 	\item GEOMETRIC\_REPRESENTATION\_ITEM (abstrakt)
@@ -52,19 +52,19 @@ Da die Implementierung aller vorhandenen STEP-Klassen den Rahmen dieser Arbeit �
 
 \paragraph{CARTESIAN\_POINT}
 
-Beschreibt einen Punkt im dreidimensionalen Raum mit den Koordinaten x, y und z (in mm) bezogen auf das Weltkoordinatensystem des in der STEP-Datei beschriebenen Bauteils. Diese Punkte dienen als Basis für viele weitere STEP-Entitäten, beziehen sich selbst aber nicht auf andere Objekte. 
+Beschreibt einen Punkt im dreidimensionalen Raum mit den Koordinaten x, y und z (in mm), bezogen auf das Weltkoordinatensystem des in der STEP-Datei beschriebenen Bauteils. Diese Punkte dienen als Basis für viele weitere STEP-Entitäten, beziehen sich selbst aber nicht auf andere Objekte. 
 
 \paragraph{DIRECTION}
 
-Ebenso wie die CARTESIAN\_POINTs beziehen sich diese Entitäten nicht auf andere. Sie repräsentieren einen normalisierten Richtungsvektor (Länge = 1mm) mit den Richtungskoordinaten x, y, z (in mm). Diese Richtungsvektoren werden von vielen STEP-Entitäten referenziert.
+Ebenso wie die CARTESIAN\_POINTs beziehen sich diese Entitäten nicht auf andere. Sie repräsentieren einen normalisierten Richtungsvektor (Länge = 1 mm) mit den Richtungskoordinaten x, y, z (in mm). Diese Richtungsvektoren werden von vielen STEP-Entitäten referenziert.
 
 \paragraph{VECTOR}
 
-Stellt einen räumlichen Vektor dar. Dieser hat als Grundgeometrie einen normalisierten Richtungsvektor (DIRECTION) und eine gegebene Länge. Ein VECTOR bezieht sich demnach, anders als die vorher beschriebenen Klassen auf ein Objekt einer anderen Klasse.
+Stellt einen räumlichen Vektor dar. Dieser hat als Grundgeometrie einen normalisierten Richtungsvektor (DIRECTION) und eine gegebene Länge. Ein VECTOR bezieht sich demnach, anders als die vorher beschriebenen Klassen, auf ein Objekt einer anderen Klasse.
 
 \paragraph{AXIS2\_PLACEMENT\_3D}
 
-Beschreibt ein lokales Koordinatensystem im Raum. Es besteht aus einem CARTESIAN\_POINT, welcher die Position des lokalen Koordiantenursprunges darstellt. Des Weiteren definieren zwei Richtungsvektoren die Ausrichtung dieses lokalen Koordinatensystems.
+Beschreibt ein lokales Koordinatensystem im Raum. Es besteht aus einem CARTESIAN\_POINT, welcher die Position des lokalen Koordiantenursprungs darstellt. Des Weiteren definieren zwei Richtungsvektoren die Ausrichtung dieses lokalen Koordinatensystems.
 
 \paragraph{LINE}
 
@@ -85,7 +85,7 @@ Definiert einen Kreis im dreidimensionalen Raum. Die Position (Mittelpunkt) und 
 
 \paragraph{PLANE}
 
-Beschreibt eine Ebene im Raum. Diese Ebene hat keine räumliche Begrenzung und ist durch einen AXIS2\_PLACEMENT\_3D eindeutig definiert. Ähnlich wie beim CIRCLE legt der erste Vektor des lokalen Koordinatensystems den Normalenvektor der Ebene fest. Der zweite Vektor beschreibt einen Richtungsvekotor der Ebene. Durch den Koordinatenursprung des lokalen Koordinatensystems, wird der Ortsvektor der Ebene definiert. 
+Beschreibt eine Ebene im Raum. Diese Ebene hat keine räumliche Begrenzung und ist durch einen AXIS2\_PLACEMENT\_3D eindeutig definiert. Ähnlich wie beim CIRCLE legt der erste Vektor des lokalen Koordinatensystems den Normalenvektor der Ebene fest. Der zweite Vektor beschreibt einen Richtungsvektor der Ebene. Durch den Koordinatenursprung des lokalen Koordinatensystems wird der Ortsvektor der Ebene definiert. 
 
 \begin{figure}[h]
 	\centering
@@ -100,7 +100,7 @@ Beschreibt eine Ebene im Raum. Diese Ebene hat keine räumliche Begrenzung und i
 \paragraph{CYLINDRICAL\_SURFACE}
 
 
-Beschreibt analog zur PLANE eine zylindrische Ebene im Raum. Diese kann man sich vorstellen als Mantelfläche eines unendlich langen Zylinders. Die Lage des Zylinders wird auch hier durch eine AXIS2\_PLACEMENT\_3D definiert und hat als zusätzlichen Parameter eine Zahlenwertangabe zum Radius. In der folgenden Abbildung ist zu erkennen, dass die Achse des Zylinders aus dem ersten Vektor des lokalen Systems gebildet wird und der zweite Vektor in der parallel zur Deckfläche des Zylinders liegt.
+Beschreibt analog zur PLANE eine zylindrische Ebene im Raum. Diese kann man sich vorstellen als Mantelfläche eines unendlich langen Zylinders. Die Lage des Zylinders wird auch hier durch eine AXIS2\_PLACEMENT\_3D definiert und hat als zusätzlichen Parameter eine Zahlenwertangabe zum Radius. In der folgenden Abbildung ist zu erkennen, dass die Achse des Zylinders aus dem ersten Vektor des lokalen Systems gebildet wird und der zweite Vektor parallel zur Deckfläche des Zylinders liegt.
 
 \begin{figure}[h]
 	\centering
@@ -113,15 +113,15 @@ Beschreibt analog zur PLANE eine zylindrische Ebene im Raum. Diese kann man sich
 
 \paragraph{VERTEX\_POINT}
 
-Definiert einen Punkt des Bauteils im Raum. Dieser wird definiert durch einen CARTESIAN\_POINT. Der Unterschied diesem besteht darin, dass es sich bei einem VERTEX\_POINT um einen tatsächlichen Punkt des Bauteils (beispielsweise ein Eckpunkt einer Körperkante) handelt und nicht um eine bloße Referenz.   
+Definiert einen Punkt des Bauteils im Raum. Dieser wird definiert durch einen CARTESIAN\_POINT. Der Unterschied besteht darin, dass es sich bei einem VERTEX\_POINT um einen tatsächlichen Punkt des Bauteils (beispielsweise einen Eckpunkt einer Körperkante) handelt und nicht um eine bloße Referenz.   
 
 \paragraph{EDGE\_CURVE}
 
-Beschreibt eine Körperkante. Dabei kann es sich um verschiedene Kantentypen, wie Kreise, Linien oder Splines  handeln. Definiert werden Anfangs- und Endpunkt der EDGE\_CURVE. Diese werden als Körperpunkte (VERTEX) definiert. Handelt es sich um eine geschlossene Kante, beispielsweise einen Kreis, dann sind Anfangs- und Endvertex identisch. Außerdem weißt eine EDGE\_CURVE eine Orientierung auf. Diese wird durch einen boolschen Wert (wahr oder falsch) angegeben und definiert so eindeutig Anfangs- bzw. Endpunkt der Körperkante.   
+Beschreibt eine Körperkante. Dabei kann es sich um verschiedene Kantentypen, wie Kreise, Linien oder Splines  handeln. Definiert werden Anfangs- und Endpunkt der EDGE\_CURVE. Diese werden als Körperpunkte (VERTEX) definiert. Handelt es sich um eine geschlossene Kante, beispielsweise einen Kreis, dann sind Anfangs- und Endvertex identisch. Außerdem weist eine EDGE\_CURVE eine Orientierung auf. Diese wird durch einen boolschen Wert (wahr oder falsch) angegeben und definiert so eindeutig Anfangs- bzw. Endpunkt der Körperkante.   
 
 \paragraph{EDGE\_LOOP}
 
-Beschreibt einen Kantenverbund aus mehreren Körperkanten. Dieser Kantenverbund ist geschlossen und erhält als Parameter die Liste der enthaltenen Körperkanten. 
+Beschreibt einen Kantenverbund aus mehreren Körperkanten. Dieser Kantenverbund ist geschlossen und enthält als Parameter die Liste der enthaltenen Körperkanten. 
 
 \paragraph{FACE\_OUTER\_BOUND}
 
@@ -129,11 +129,11 @@ Beschreibt die äußere Umrandung einer Körperfläche und wird durch eine EDGE\
 
 \paragraph{FACE\_BOUND}
 
-Defininert die innere Umrandung einer Körperfläche eine EDGE\_LOOP beschrieben. Dies kann, wie bei einer FACE\_OUTER\_BOUND, durch ein Polygon aus verschieden Linien oder Kurvenstücken sein. Solch eine äußere Umrandung kann aber auch durch einen Kreis definiert sein.   
+Definiert die innere Umrandung einer Körperfläche einer EDGE\_LOOP. Dies kann, wie bei einer FACE\_OUTER\_BOUND, durch ein Polygon aus verschiedenen Linien oder Kurvenstücken sein. Solch eine innere Umrandung kann aber auch durch einen Kreis definiert sein.   
 
 \paragraph{ADVANCED\_FACE}
 
-Beschreibt eine tatsächliche Körperfläche des in der STEP-Datei formulierten Bauteils. Definiert ist die Fläche zum einen durch eine Liste an Umrandungen(BOUNDs) und durch die Angabe einer PLANE bzw. CYLINDRICAL\_SURFACE in welcher diese Umrandungen liegen. Diese Körperflächen sind in ihrer räumlichen Ausdehnung begrenzt. Die Menge aller ADVANCED\_FACES einer STEP-Datei ergeben zusammengesetz das beschriebene Modell des Bauteils. 
+Beschreibt eine tatsächliche Körperfläche des in der STEP-Datei formulierten Bauteils. Definiert ist die Fläche zum einen durch eine Liste an Umrandungen(BOUNDs)zum anderen durch die Angabe einer PLANE bzw. CYLINDRICAL\_SURFACE, in welcher diese Umrandungen liegen. Diese Körperflächen sind in ihrer räumlichen Ausdehnung begrenzt. Die Menge aller ADVANCED\_FACES einer STEP-Datei ergeben zusammengesetzt das beschriebene Modell des Bauteils. 
 
 Abbildung \ref{fig:advancedfaceentity} zeigt den Aufbau einer planaren ADVANCED\_FACE aus einer äußeren Umrandung in Form eines Polygons (EDGE\_LOOP aus mehreren LINE-Entitäten) und einer inneren Umrandung durch einen Kreis.  
 
@@ -151,33 +151,33 @@ Abbildung \ref{fig:advancedfaceentity} zeigt den Aufbau einer planaren ADVANCED\
 \label{sec:string2entity}
 
 
-Nach der Eingrenzung der zu realisierenden STEP-Entitäten und der Erklärung dieser folgt in diesem Abschnitt die Beschreibung, wie aus einer Zeile der STEP-Datei eine konkretes Java-Objekt gebildet wird. 
+Nach der Eingrenzung der zu realisierenden STEP-Entitäten und der Erklärung dieser folgt in diesem Abschnitt die Beschreibung, wie aus einer Zeile der STEP-Datei ein konkretes Java-Objekt gebildet wird. 
 
-Zuerst müssen alle impelementierten STEP-Entitäten als Java-Klassen beschrieben werden. Diese dienen als Muster für die verschiedenen Objekte der STEP-Datei. Die oben aufgeführten Klassen sind im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} zu finden. Diese enthalten die entsprechend der STEP-Dokumentation aufgeführten Attribute für jede Entität. 
+Zuerst müssen alle implementierten STEP-Entitäten als Java-Klassen beschrieben werden. Diese dienen als Muster für die verschiedenen Objekte der STEP-Datei. Die oben aufgeführten Klassen sind im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} zu finden. Diese enthalten die entsprechend der STEP-Dokumentation aufgeführten Attribute für jede Entität. 
 
-In der Klasse \textit{StpEntityBuilder} im Projektordner \textit{"`./src/main/java/com.jandoant/builder"'} wird dies umgesetzt. Diese Klasse wird im Programmablauf für jede Zeile der STEP-Datei einmal aufgerufen. Übergeben wird ihr die Zeichenkette der jeweiligen Zeile. Aus dieser übergebenen Zeichenkette kann die Klasse nun, mit Aufruf der Funktion \textit{extractStpEntity()} ein entsprechendes Objekt der beschriebenen STEP-Entität bilden. 
-Dazu wird die beschreibende Zeichenkette in ihre drei Bestandteile (ID, Klassenname, Attibutsliste) zerlegt. Über die Kenntnis des Klassennamens, kann die Klasse \textit{StpEntityBuilder} entscheiden, welcher Entitätstyp erzeugt werden soll. In einem weiteren Schritt wird die Elemente der Attributsliste extrahiert und ein konkretes Java-Objekt einer STEP-Entität mit all seinen konkreten Attributen kann gebildet werden. Es ist aber festzuhalten, dass es zu diesem Zeitpunkt noch nicht möglich ist, die tatsächlichen Referenzobjekte in der erzeugten Entität festzuhalten. Vorerst kann aus der Zeichenkette nur die jeweilige ID der Referenzobjekte gespeichert werden. Die Zuordnung kann erst von statten gehen, wenn alle Zeilen der STEP-Datei in Java-Objekte ausgelesen wurden.
+In der Klasse \textit{StpEntityBuilder} im Projektordner \textit{"`./src/main/java/com.jandoant/builder"'} wird dies umgesetzt. Diese Klasse wird im Programmablauf für jede Zeile der STEP-Datei einmal aufgerufen. Übergeben wird ihr die Zeichenkette der jeweiligen Zeile. Aus dieser übergebenen Zeichenkette kann die Klasse nun mit Aufruf der Funktion \textit{extractStpEntity()} ein entsprechendes Objekt der beschriebenen STEP-Entität bilden. 
+Dazu wird die beschreibende Zeichenkette in ihre drei Bestandteile (ID, Klassenname, Attributsliste) zerlegt. Über die Kenntnis des Klassennamens kann die Klasse \textit{StpEntityBuilder} entscheiden, welcher Entitätstyp erzeugt werden soll. In einem weiteren Schritt werden die Elemente der Attributsliste extrahiert und ein konkretes Java-Objekt einer STEP-Entität mit all seinen konkreten Attributen kann gebildet werden. Es ist festzustellen, dass es zu diesem Zeitpunkt noch nicht möglich ist, die tatsächlichen Referenzobjekte in der erzeugten Entität festzuhalten. Vorerst kann aus der Zeichenkette nur die jeweilige ID der Referenzobjekte gespeichert werden. Die Zuordnung kann erst erfolgend, wenn alle Zeilen der STEP-Datei in Java-Objekte ausgelesen wurden.
 
 \subsubsection{Abbildung des gesamten STEP-Modells in Java} 
 
-Das Programm ist, wie im vorherigen Abschnitt gezeigt in der Lage, aus einer einzelnen Zeile der vorliegenden STEP-Datei ein konkretes Java-Objekt zu extrahieren. Nun folgt in diesem Schritt die Decodierung der gesamten Datei. Nach Beendigung dieses Vorgangs ist die komplette geometrische Bauteilstruktur im Programm abgebildet und kann darauffolgend weiterverarbeitet werden.
+Das Programm ist, wie im vorherigen Abschnitt gezeigt, in der Lage, aus einer einzelnen Zeile der vorliegenden STEP-Datei ein konkretes Java-Objekt zu extrahieren. Nun folgt in diesem Schritt die Decodierung der gesamten Datei. Nach Beendigung dieses Vorgangs ist die komplette geometrische Bauteilstruktur im Programm abgebildet und kann darauffolgend weiter verarbeitet werden.
 
 Der Vorgang dieser Decodierung erfolgt durch die Klasse \textit{StpModelBuilder}, welche sich im Projektordner \textit{"`./src/main/java/com.jandoant/builder"'} befindet. 
-Wird diese Klasse im Programmablauf instantiiert, so wird ihr der absolute Pfad, unter dem die zu verarbeitende STEP-Datei liegt übergeben. Mit dieser Information hat die erzeuge Instanz den Zugriff auf alle Zeilen der Datei, welche die Bauteilgeometrie beschreiben.
+Wird diese Klasse im Programmablauf instanziiert, so wird ihr der absolute Pfad, unter dem die zu verarbeitende STEP-Datei liegt, übergeben. Mit dieser Information hat die erzeuge Instanz den Zugriff auf alle Zeilen der Datei, welche die Bauteilgeometrie beschreiben.
 Mit Aufruf der Funktion \textit{parseFile()} wird die übergebene STEP-Datei verarbeitet. Dabei werden zunächst alle Zeilen der Datei durchlaufen. Jede Zeichenkette, die eine STEP-Entität beschreibt, also mit dem \#-Symbol beginnt und mit einem Semikolon endet, wird in einer Liste dieser Zeichenketten zwischengespeichert. Es ist dabei unerheblich, ob die Zeichenkette durch einen oder mehrere Zeilenumbrüche getrennt ist. Dies hat den Effekt, dass die HEADER-Sektion herausgefiltert wird. Diese hat keine Bedeutung für die grundlegende Funktion des Programms, da in diesem Abschnitt der Datei keine STEP-Entitäten beschrieben werden.
 
-Aus der erzeugten Liste an Zeichenketten, welche dem gewünschten Muster entsprechen, werden im folgenden Bearbeitungsschritt unter Anwendung der in \prettyref{sec:string2entity} dargelegten Methode  der Klasse  \textit{StpEntityBuilder} die jeweilig beschriebenen STEP-Entitäten im Java-Code instantiiert und in einer List zwischengespeichert. Dabei ist anzumerken, dass ausschließlich die in der Klasse "`StpEntityContract"' im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} festgehaltenen STEP-Entitäten decodiert werden. Alle Zeichenketten, die nicht eine solche Entität beschreiben, werden ignoriert. Das führt dazu, dass ausschließlich die geometrischen Informationen des Modells extrahiert werden. Andere Angaben, die in der STEP-Datei festgehalten sein können, werden bei dieser Implementierung nicht berücksichtigt, da sie für die grundlegende Funktion des Programmes unerheblich sind.
+Aus der erzeugten Liste an Zeichenketten, welche dem gewünschten Muster entsprechen, werden im folgenden Bearbeitungsschritt unter Anwendung der in \prettyref{sec:string2entity} dargelegten Methode der Klasse  \textit{StpEntityBuilder} die jeweilig beschriebenen STEP-Entitäten im Java-Code instanziiert und in einer Liste zwischengespeichert. Dabei ist anzumerken, dass ausschließlich die in der Klasse "`StpEntityContract"' im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} festgehaltenen STEP-Entitäten decodiert werden. Alle Zeichenketten, die nicht eine solche Entität beschreiben, werden ignoriert. Das führt dazu, dass ausschließlich die geometrischen Informationen des Modells extrahiert werden. Andere Angaben, die in der STEP-Datei festgehalten sein können, werden bei dieser Implementierung nicht berücksichtigt, da sie für die grundlegende Funktion des Programmes unerheblich sind.
 
-Nach dem Durchlaufen aller Zeilen und anschließender Instanziierung der Java-Objekte entsprechend der STEP-Beschreibung, liegt zu diesem Punkt eine Liste mit allen vorkommenden geometrischen STEP-Entitäten im Programm vor. Allerdings ist damit den Anforderungen noch nicht entsprochen. Nach der Decodierung der einzelnen Zeichenketten haben die Java-Objekte noch keine Relation zueinander. Wie in \prettyref{sec:string2entity} erläutert, sind die Referenzentitäten, auf die sich eine STEP-Entität bezieht, bisher nur mit ihrer ID-erfasst. Eine Zuordnung der Objekte passiert nun aus vorliegender Liste der erzeugten Java-Objekte. 
+Nach dem Durchlaufen aller Zeilen und anschließender Instanziierung der Java-Objekte entsprechend der STEP-Beschreibung liegt zu diesem Punkt eine Liste mit allen vorkommenden geometrischen STEP-Entitäten im Programm vor. Allerdings ist damit den Anforderungen noch nicht entsprochen. Nach der Decodierung der einzelnen Zeichenketten haben die Java-Objekte noch keine Relation zueinander. Wie in \prettyref{sec:string2entity} erläutert, sind die Referenzentitäten, auf die sich eine STEP-Entität bezieht, bisher nur mit ihrer ID erfasst. Eine Zuordnung der Objekte passiert nun aus vorliegender Liste der erzeugten Java-Objekte. 
 Dazu wird die Methode \textit{convertFromIds()} aufgerufen, welche in jeder Java-Klasse, die eine STEP-Entität beschreibt, implementiert ist.
 Mit Aufruf der Methode durch das betreffende Java-Objekt wird die Entitätsliste durchlaufen. Dabei werden alle Entitäten, deren ID mit einer der IDs, die in diesem Java-Objekt hinterlegt sind, herausgefiltert und dem Java-Objekt zugewiesen. Nachdem dieser Vorgang für alle Objekte der Liste ausgeführt wurde, sind alle Referenzen über tatsächliche Java-Objekte hergestellt. 
 
-Die im Programmablauf aufgerufene Methode \textit{parseFile()} der Klasse \textit{StpModelBuilder} gibt nun in einem finalen Schritt alle \textit{ADVANCED\_FACE}s, die in der STEP-Datei durch Zeichenketten beschrieben wurden, als tatsächliche Java-Objekte an das Programm zurück. Dies geschieht in Form einer Liste.  Diese \textit{ADVANCED\_FACE}s  referenzieren wie oben beschrieben alle Objekte, durch welche sie selbst definiert werden. Somit ist die gesamte Bauteilstruktur im Programm abgebildet und kann im weiteren Ablauf des Programms verarbeitet werden.
+Die im Programmablauf aufgerufene Methode \textit{parseFile()} der Klasse \textit{StpModelBuilder} gibt nun in einem finalen Schritt alle \textit{ADVANCED\_FACE}s, die in der STEP-Datei durch Zeichenketten beschrieben wurden, als tatsächliche Java-Objekte an das Programm zurück. Dies geschieht in Form einer Liste. Diese \textit{ADVANCED\_FACE}s  referenzieren wie oben beschrieben alle Objekte, durch welche sie selbst definiert werden. Somit ist die gesamte Bauteilstruktur im Programm abgebildet und kann im weiteren Ablauf des Programms verarbeitet werden.
 
 \subsection{Diskretisierung der Körperflächen}
 
 Die Diskretisierung der Oberflächen wird unter Einführung eines lokalen Koordinatensystems für jede einzelne Körperfläche (\textit{ADVANCED\_FACE}) realisiert.
-Ziel ist dabei die Umwandlung der Punkte der Körpfläche, welche durch die STEP-Datei in globalen Koordinaten ausgedrückt sind, in ein lokales Koordinatensystem zu überführen und im Anschluss zu verändern. Dabei werden alle Punkte der jeweiligen Fläche einer Koordinatentransformation unterzogen. So besitzt jeder Punkt, neben seiner Beschreibung im Weltkoordinatensystem mit Werten in x, y und z-Richtung, gleichzeitig auch Definitionen bezüglich eines lokalen Koordinatensystems in u-, v- und w-Richtung. Die folgende \prettyref{fig:basetrafo} verdeutlicht dies. 
+Ziel ist dabei die Umwandlung der Punkte der Körperflächen, welche durch die STEP-Datei in globalen Koordinaten ausgedrückt sind, in ein lokales Koordinatensystem zu überführen und im Anschluss zu verändern. Dabei werden alle Punkte der jeweiligen Fläche einer Koordinatentransformation unterzogen. So besitzt jeder Punkt neben seiner Beschreibung im Weltkoordinatensystem mit Werten in x, y und z-Richtung gleichzeitig auch Definitionen bezüglich eines lokalen Koordinatensystems in u-, v- und w-Richtung. Die folgende \prettyref{fig:basetrafo} verdeutlicht dies. 
 
 \begin{figure}[h]
 	\centering
@@ -189,7 +189,7 @@ Ziel ist dabei die Umwandlung der Punkte der Körpfläche, welche durch die STEP
 	
 \end{figure}
 
-Das lokale Koordinatensystem ist spezifisch für jede Körperfläche und ermöglicht eine generalisierte Bearbeitung der diskretisierten Punkte. Jede dreidimensionale Körperfläche wird so in eine zweidimensionale Fläche mit Ausdehnung in u-, und v-Richtung überführt. Die w-Koordinate, welche senkrecht zur Fläche zeigt ist dabei für die Idealgeometrie w=0. Dieses Verfahren wird als "`UV-Mapping"' bezeichnet.  Mit der Anwendung der Deformationsfunktionen ändert sich die Koordinate der Punkte in dieser Richtung. Eine Rücktransformation in das globale Koordinatensystem bildet diese Veränderung an der deformierten Geometrie ab.       
+Das lokale Koordinatensystem ist spezifisch für jede Körperfläche und ermöglicht eine generalisierte Bearbeitung der diskretisierten Punkte. Jede dreidimensionale Körperfläche wird so in eine zweidimensionale Fläche mit Ausdehnung in u- und v-Richtung überführt. Die w-Koordinate, welche senkrecht zur Fläche zeigt, ist dabei für die Idealgeometrie w = 0. Dieses Verfahren wird als "`UV-Mapping"' bezeichnet. Mit der Anwendung der Deformationsfunktionen ändert sich die Koordinate der Punkte in dieser Richtung. Eine Rücktransformation in das globale Koordinatensystem bildet diese Veränderung an der deformierten Geometrie ab.       
 
 \begin{figure}[h]
 	\centering
@@ -203,7 +203,7 @@ Das lokale Koordinatensystem ist spezifisch für jede Körperfläche und ermögl
  
 \subsubsection{Basistransformation}
 
-Um eine Basistransformation zwischen Welt- und lokalem Koordinatensystem durchführen zu können ist es notwendig, sowohl die Basiseinheitsvektoren des Weltkoordinatensystem, als auch die des lokalen Systems zu kennen. Die Basiseinheitsvektoren des globalen Koordinatensystems sind für alle Punkte des STEP-Modells stets die selben und werden wie folgt definiert.
+Um eine Basistransformation zwischen Welt- und lokalem Koordinatensystem durchführen zu können, ist es notwendig, sowohl die Basiseinheitsvektoren des Weltkoordinatensystems als auch die des lokalen Systems zu kennen. Die Basiseinheitsvektoren des globalen Koordinatensystems sind für alle Punkte des STEP-Modells stets dieselben und werden wie folgt definiert.
 
 \begin{singlespace}
 	\begin{equation}
@@ -235,16 +235,16 @@ Die Menge aller Punkte einer Ebene wird in der Geometrie durch die Formel
 E: \vv{x} = \vv{x_{0}} + r \cdot \vv{x_{R1}} + s \cdot \vv{x_{R2}}  
 \end{equation}
 
-eindeutig festgelegt. Dabei steht $\vv{x}$ für einen beliebigen Punkt der Ebene. $\vv{x_{0}}$ beschreibt den Ortsvektor, $\vv{x_{R1}}$ und $\vv{x_{R2}}$  die Richtungsvektoren und $r$ und $s$ sind beliebige Laufparameter um die Lage des Punktes als Linearkombination der Richtungsvektoren genau zu beschreiben.
+eindeutig festgelegt. Dabei steht $\vv{x}$ für einen beliebigen Punkt der Ebene. $\vv{x_{0}}$ beschreibt den Ortsvektor, $\vv{x_{R1}}$ und $\vv{x_{R2}}$  die Richtungsvektoren und $r$ und $s$ sind beliebige Laufparameter, um die Lage des Punktes als Linearkombination der Richtungsvektoren genau zu beschreiben.
 
 Die Position einer \textit{PLANE} wird durch eine \textit{AXIS2\_PLACEMENT\_3D} beschrieben. Daraus lassen sich die Elemente einer Ebenenbeschreibung, wie in \prettyref{eq:plane} dargestellt, auslesen. 
-Dabei entspricht der CARTESIAN\_POINT der Positionsbeschreibung dem Ortsvektor. Dieser stellt gleichzeitig den Koordinatenursprung des lokalen Koordinatensystems dar. Die erste \textit{DIRECTION} dieser Positionsbeschreibung entspricht dem normalisierten Normalenvektor der Ebene $\vv{n}$, die zweite \textit{DIRECTION} einem normalisierten Richtungsvektor $\vv{x_{R1}}$. Da in der Lagebeschreibung der Ebene nur der Normalenvektor und ein Richtungsvektor dieser Ebene beschrieben sind, wird der fehlende Richtungsvektor durch Bildung des Kreuzproduktes der beiden, für ein rechtshändiges System, nach \prettyref{eq:crossproduct} erzeugt.
+Dabei entspricht der CARTESIAN\_POINT der Positionsbeschreibung dem Ortsvektor. Dieser stellt gleichzeitig den Koordinatenursprung des lokalen Koordinatensystems dar. Die erste \textit{DIRECTION} dieser Positionsbeschreibung entspricht dem normalisierten Normalenvektor der Ebene $\vv{n}$, die zweite \textit{DIRECTION} einem normalisierten Richtungsvektor $\vv{x_{R1}}$. Da in der Lagebeschreibung der Ebene nur der Normalenvektor und ein Richtungsvektor dieser Ebene beschrieben sind, wird der fehlende Richtungsvektor durch Bildung des Kreuzproduktes der beiden für ein rechtshändiges System nach \prettyref{eq:crossproduct} erzeugt.
 
 \begin{equation}\label{eq:crossproduct}
 \vv{x_{R2}} = \vv{n} \times \vv{x_{R1}}
 \end{equation}  
 
-Ebenso, wie bei einer ebenen Fläche, die durch die STEP-Entität PLANE beschrieben wird, wird auch bei zylindrischen Flächen des Typs \textit{CYLINDRICAL\_SURFACE} die Ausrichtung des lokalen Koordinatensystems in einem \textit{AXIS2\_PLACEMENT\_3D} festgehalten. Dabei unterscheidet sich allerdings die Bedeutung der \textit{DIRECTION}s der Positionsbeschreibung. Der \textit{CARTESIAN\_POINT} des \textit{AXIS2\_PLACEMENT\_3D} beschreibt dabei die Position des Orstvektors der Fläche, die erste \textit{DIRECTION} die Richtung der Achse $\vv{n}$ des Zylinders und die zweite \textit{DIRECTION} $\vv{x_{R1}}$ liegt parallel zur radialen Richtung des Zylinders. Mit Hilfe der \prettyref{eq:crossproduct} lässt sich auch hier ein weiterer Vektor bilden, welcher rechtsorientiert senkrecht zu Achse und $\vv{x_{R1}}$ ebenfalls in radiale Richtung des Zylinder zeigt. 
+Ebenso, wie bei einer ebenen Fläche, die durch die STEP-Entität PLANE beschrieben wird, wird auch bei zylindrischen Flächen des Typs \textit{CYLINDRICAL\_SURFACE} die Ausrichtung des lokalen Koordinatensystems in einem \textit{AXIS2\_PLACEMENT\_3D} festgehalten. Dabei unterscheidet sich allerdings die Bedeutung der \textit{DIRECTION}s der Positionsbeschreibung. Der \textit{CARTESIAN\_POINT} des \textit{AXIS2\_PLACEMENT\_3D} beschreibt dabei die Position des Orstvektors der Fläche, die erste \textit{DIRECTION} die Richtung der Achse $\vv{n}$ des Zylinders und die zweite \textit{DIRECTION} $\vv{x_{R1}}$ liegt parallel zur radialen Richtung des Zylinders. Mit Hilfe der \prettyref{eq:crossproduct} lässt sich auch hier ein weiterer Vektor bilden, welcher rechtsorientiert senkrecht zur Achse und $\vv{x_{R1}}$ ebenfalls in radiale Richtung des Zylinder zeigt. 
 
 Die lokalen Basiseinheitsvektoren \begin{singlespace} $\vv{e_{u}}=\begin{pmatrix}
 	e_{u_x} & e_{u_y} & e_{u_z}
@@ -291,7 +291,7 @@ Die Basis des Weltkoordinatensystems ergibt sich analog zur Basismatrix $B_{UVW}
 	\end{equation} 
 \end{singlespace}
 
-Die Transformationsmatrix um einen Punkt vom globalen in das lokale Koordinatensystem der Ebene zu transformieren ergibt sich nach \prettyref{eq:trafoXYZ2UVW}.
+Die Transformationsmatrix um einen Punkt vom globalen in das lokale Koordinatensystem der Ebene zu transformieren, ergibt sich nach \prettyref{eq:trafoXYZ2UVW}.
 
 \begin{equation}\label{eq:trafoXYZ2UVW}
 T_{xyz \rightarrow uvw} = B_{uvw}^{-1} \cdot B_{xyz}  
@@ -303,19 +303,19 @@ Die Transformationsmatrix, um einen Punkt wieder aus dem lokalen Koordinatensyst
 T_{uvw \rightarrow xyz} = T_{xyz \rightarrow uvw}^{-1} 
 \end{equation}   
 
-Hat man einen Punkt $\vv{p_{xyz}}$ in globalen Koordinaten gegeben, so berechnet sich seine Position im lokalen Kordinatensystem entsprechend \prettyref{eq:pxyz2puvw}. 
+Hat man einen Punkt $\vv{p_{xyz}}$ in globale Koordinaten gegeben, so berechnet sich seine Position im lokalen Koordinatensystem entsprechend \prettyref{eq:pxyz2puvw}. 
 
 \begin{equation}\label{eq:pxyz2puvw}
 \vv{p_{uvw}}=T_{xyz \rightarrow uvw} \cdot \vv{p_{xyz}}
 \end{equation}
 
-Analog dazu berechnet man die Rücktransformation eines Punktes $\vv{p_{uvw}}$ vom lokalen Koordiantensystem in das globale Koordinatensystem. nach \prettyref{eq:trafoUVW2XYZ}
+Analog dazu berechnet man die Rücktransformation eines Punktes $\vv{p_{uvw}}$ vom lokalen Koordiantensystem in das globale Koordinatensystem nach \prettyref{eq:trafoUVW2XYZ}
   
 \begin{equation}\label{eq:trafoUVW2XYZ}
 \vv{p_{xyz}}=T_{uvw \rightarrow xyz} \cdot \vv{p_{uvw}}
 \end{equation}
 
-Die Berechnung einer speziellen Transformationsmatrix ist in den Klassen \textit{StpPlane}, sowie \textit{StpCylindricalFace}, welche sich im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} befinden, implementiert. Die Methode \textit{getXYZtoUVWTransformationMatrix()} ermittelt die Transformationsmatrix für die Umwandlung eines Punktes in lokale Koordinaten. Die Matrix zur Rücktransformation wird über die Methode \textit{getUVWtoXYZransformationMatrix()} berechnet. 
+Die Berechnung einer speziellen Transformationsmatrix ist in den Klassen \textit{StpPlane} sowie \textit{StpCylindricalFace}, welche sich im Projektordner \textit{"`./src/main/java/com.jandoant/stp\_entities"'} befinden, implementiert. Die Methode \textit{getXYZtoUVWTransformationMatrix()} ermittelt die Transformationsmatrix für die Umwandlung eines Punktes in lokale Koordinaten. Die Matrix zur Rücktransformation wird über die Methode \textit{getUVWtoXYZransformationMatrix()} berechnet. 
 Die Anwendung dieser Matrizen erfolgt in der Klasse \textit{StpCartesianPoint} im selben Projektordner. Die Methode \textit{baseTransform(Matrix transformationMatrix)} nimmt eine Transformationsmatrix entgegen und gibt einen entsprechend der Formeln \ref{eq:trafoUVW2XYZ} bzw. \ref{eq:trafoXYZ2UVW} transformierten Punkt aus. 
 
 \subsubsection{Diskretisierung zylindrischer Flächen}
@@ -336,7 +336,7 @@ lalalalalala
 
 \subsubsection{Diskretisierung planarer Flächen}
 
-Planare \textit{ADVANCED\_FACE}s werden in STEP durch die \textit{PLANE} auf der sie liegen und einer bestimmten Anzahl an Umrandungen beschrieben. Die Menge aller Punkte, die zu dieser ADVANCED\_FACE gehören ergibt sich aus der Schnittmenge aller Punkte der PLANE und den Punkten innerhalb der positiven Umrandungen (\textit{FACE\_OUTER\_BOUND}s) ohne die Punkte, die innerhalb der negativen Umrandung liegen. 
+Planare \textit{ADVANCED\_FACE}s werden in STEP durch die \textit{PLANE}, auf der sie liegen, und einer bestimmten Anzahl an Umrandungen beschrieben. Die Menge aller Punkte, die zu dieser ADVANCED\_FACE gehören, ergibt sich aus der Schnittmenge aller Punkte der PLANE und den Punkten innerhalb der positiven Umrandungen (\textit{FACE\_OUTER\_BOUND}s) ohne die Punkte, die innerhalb der negativen Umrandung liegen. 
 Dies ist durch folgende Abbildung zu visualisieren.
 
 \begin{figure}[h]
@@ -349,7 +349,7 @@ Dies ist durch folgende Abbildung zu visualisieren.
 	
 \end{figure}
 
-Bei der Diskretisierung planarer Flächen wird unterschieden zwischen kreisförmigen Umrandungen und Unmrandungen, die aus einem Polygon bestehen.
+Bei der Diskretisierung planarer Flächen wird unterschieden zwischen kreisförmigen Umrandungen und Umrandungen, die aus einem Polygon bestehen.
 
 Als erstes soll die Diskretisierung von positiven kreisförmigen Umrandungen beschrieben werden. Dazu wird die kreisförmige Fläche in Ringe und Segmente unterteilt. Der Nutzer kann für jede Umrandung die Anzahl dieser angeben und somit die Detaillierung der Diskretisierung steuern. Die Schnittpunkte dieser Elemente sollen als Objekte der Klasse \textit{StpCartesianPoint}s in der Punktewolke der Körperfläche gespeichert werden. 
 
@@ -363,12 +363,12 @@ Als erstes soll die Diskretisierung von positiven kreisförmigen Umrandungen bes
 	
 \end{figure}
 
-Wie in Abschnitt XYZ beschrieben besteht eine einzelne Umrandung einer \textit{ADVANCED\_FACE} aus einem Kantenverbund (\textit{EDGE\_LOOP}). Bei kreisförmigen Umrandungen wird dieser Kantenverbund genau aus einer Kante des Typs \textit{CIRCLE} gebildet. Diese Entität enthält Informationen zur Position des Kreises (in Form einer \textit{AXIS2\_PLACEMENT\_3D}) und dessen Radius.
-Mit Kenntnis kann die Lage des Kreises bezogen auf das lokale Koordinatensystem bestimmt werden. Dazu muss auch der Mittelpunkt des Kreises in das lokale Koordinatensystem transformiert werden. Ausgehend vom Radius des zu diskretisierenden Kreises und der Angabe der Anzahl an geforderten Ringen, errechnet das Programm den radialen Abstand der Ringe zueinander. Aus der Anzahl der geforderten Segmente sind die in gleicher Weise auch die Öffnungswinkel der Segmente bekannt. Um nun die diskretisierte Punktemenge der Kreisfläche zu erzeugen, wird ein Startpunkt gewählt, welcher auf dem Kreis liegt. Dieser wird um den Mittelpunkt des Kreises und den Öffnungswinkel der Kreissegmente gedreht. Seine neue Position wird in der Punktewolke der betreffenden \textit{ADVANCED\_FACE} gespeichert. Danach wird dieser Vorgang wiederholt, bis die Summe der überstrichenen Öffnungswinkel 360° beträgt. Als Ergebnis dieses Vorgangs steht nun ein diskretisierter Ring mit dem Radius des Kreises. Nach Bildung des ersten Ringes wird ein neuer Startpunkt gewählt und von diesem aus analog ein weiterer Ring erzeugt. Dieser Vorgang wird so oft wiederholt, bis die geforderte Anzahl an Ringen hergestellt ist. 
+Wie in Abschnitt XYZ beschrieben, besteht eine einzelne Umrandung einer \textit{ADVANCED\_FACE} aus einem Kantenverbund (\textit{EDGE\_LOOP}). Bei kreisförmigen Umrandungen wird dieser Kantenverbund genau aus einer Kante des Typs \textit{CIRCLE} gebildet. Diese Entität enthält Informationen zur Position des Kreises (in Form einer \textit{AXIS2\_PLACEMENT\_3D}) und dessen Radius.
+Mit dieser Kenntnis kann die Lage des Kreises bezogen auf das lokale Koordinatensystem bestimmt werden. Dazu muss auch der Mittelpunkt des Kreises in das lokale Koordinatensystem transformiert werden. Ausgehend vom Radius des zu diskretisierenden Kreises und der Angabe der Anzahl an geforderten Ringen, errechnet das Programm den radialen Abstand der Ringe zueinander. Aus der Anzahl der geforderten Segmente sind in gleicher Weise auch die Öffnungswinkel der Segmente bekannt. Um nun die diskretisierte Punktemenge der Kreisfläche zu erzeugen, wird ein Startpunkt gewählt, welcher auf dem Kreis liegt. Dieser wird um den Mittelpunkt des Kreises und den Öffnungswinkel der Kreissegmente gedreht. Seine neue Position wird in der Punktewolke der betreffenden \textit{ADVANCED\_FACE} gespeichert. Danach wird dieser Vorgang wiederholt, bis die Summe der überstrichenen Öffnungswinkel 360° beträgt. Als Ergebnis dieses Vorgangs entsteht nun ein diskretisierter Ring mit dem Radius des Kreises. Nach Bildung des ersten Ringes wird ein neuer Startpunkt gewählt und von diesem aus analog ein weiterer Ring erzeugt. Dieser Vorgang wird so oft wiederholt, bis die geforderte Anzahl an Ringen hergestellt ist. 
 
-Die Diskretisierung positiver polygonaler Umrandungen geschieht ein wenig anders. Dabei sollen sowohl die Kanten als auch der Innenraum des Polygons entsprechend Abbildung XYZ in einem vom Nutzer wählbaren Abstand der Punkte  diskretisiert werden. Dazu sollen in einem ersten Schritt alle Kanten des Polygons im vorgegebenen Abstand unterteilt werden. Danach soll ein Punkteraster mit Punkten dieses Abstandes über das Innere des Polygons gelegt werden. Dazu ist es notwendig alle Eckpunkte, die das Polygon besitzt zu finden. Das geschieht über den Kantenverbund der (\textit{EDGE\_LOOP}) Umrandung. Dieser ist, anders als bei kreisförmigen Umrandungen aus mindestens 3 Kanten aufgebaut. Diese Kanten sind vom Typ \textit{LINE}. Aus der einzelnen Kante lassen sich sowohl Anfangs- als auch Endpunkt der \textit{LINE} auslesen. Somit lassen sich die Eckpunkte des Polygon extrahieren. Nachdem die Menge der Eckpunkte des Polygons ermittelt wurde, werden alle diese Punkte in das lokale Koordinatensystem der Ebene, unter Anwendung der Transformationsmatrix umgerechnet.
+Die Diskretisierung positiver polygonaler Umrandungen geschieht ein wenig anders. Dabei sollen sowohl die Kanten als auch der Innenraum des Polygons entsprechend Abbildung XYZ in einem vom Nutzer wählbaren Abstand der Punkte  diskretisiert werden. Dazu sollen in einem ersten Schritt alle Kanten des Polygons im vorgegebenen Abstand unterteilt werden. Danach soll ein Punkteraster mit Punkten dieses Abstandes über das Innere des Polygons gelegt werden. Dazu ist es notwendig, alle Eckpunkte, die das Polygon besitzt, zu finden. Das geschieht über den Kantenverbund der (\textit{EDGE\_LOOP}) Umrandung. Dieser ist, anders als bei kreisförmigen Umrandungen, aus mindestens 3 Kanten aufgebaut. Diese Kanten sind vom Typ \textit{LINE}. Aus der einzelnen Kante lassen sich sowohl Anfangs- als auch Endpunkt der \textit{LINE} auslesen. Somit lassen sich die Eckpunkte des Polygons extrahieren. Nachdem die Menge der Eckpunkte des Polygons ermittelt wurde, werden alle diese Punkte in das lokale Koordinatensystem der Ebene unter Anwendung der Transformationsmatrix umgerechnet.
 Aus der Kenntnis der Eckpunkte kann nun ein Punkt entlang der Kanten im vorgegebenen Abstand bewegt werden. Nach jedem Einzelschritt wird der Punkt der Punktewolke der ADVANCED\_FACE hinzugefügt. 
-Um das Innere des Polygons zu diskretisieren muss zunächst das umgrenzende Rechteck gefunden werden. Innerhalb der Grenzen dieses Rechtecks wird ein Punkteraster im vorgegebenen Abstand erzeugt. Für jeden Punkt wird individuell entschieden, ob er inner- oder außerhalb des Polygons liegt. Liegt ein Punkt dieses Rasters innerhalb des Polygons, dann wird er zur Punktewolke der Körperfläche hinzugefügt.  
+Um das Innere des Polygons zu diskretisieren, muss zunächst das umgrenzende Rechteck gefunden werden. Innerhalb der Grenzen dieses Rechtecks wird ein Punkteraster im vorgegebenen Abstand erzeugt. Für jeden Punkt wird individuell entschieden, ob er inner- oder außerhalb des Polygons liegt. Liegt ein Punkt dieses Rasters innerhalb des Polygons, dann wird er zur Punktewolke der Körperfläche hinzugefügt.  
 
 \begin{figure}[h]
 	\centering
@@ -380,7 +380,7 @@ Um das Innere des Polygons zu diskretisieren muss zunächst das umgrenzende Rech
 	
 \end{figure}
 
-Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygonal) liegen sollen aus der bestehenden Punktewolke der betreffenden \textit{ADVANCED\_FACE} entfernt werden. Dazu wird für jeden bestehenden Punkt geprüft ob er dies der Fall ist. Um allerdings die Kanten negativer Umrandungen in der Punktewolke zu behalten, werden diese entsprechend der Parameter unterteilt und der Punktwolke hinzugefügt.       
+Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygonal) liegen, sollen aus der bestehenden Punktewolke der betreffenden \textit{ADVANCED\_FACE} entfernt werden. Dazu wird für jeden bestehenden Punkt geprüft, ob dies der Fall ist. Um allerdings die Kanten negativer Umrandungen in der Punktewolke zu behalten, werden diese entsprechend der Parameter unterteilt und der Punktwolke hinzugefügt.       
 
 
 
