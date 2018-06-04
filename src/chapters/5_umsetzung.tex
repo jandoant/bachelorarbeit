@@ -49,6 +49,8 @@ Da die Implementierung aller vorhandenen STEP-Klassen den Rahmen dieser Arbeit �
 \end{itemize}
 
 \subsubsection{Erläuterung der implementierten STEP-Entitäten}
+\label{sec:erklaerungstp}
+
 
 \paragraph{CARTESIAN\_POINT}
 
@@ -202,6 +204,8 @@ Das lokale Koordinatensystem ist spezifisch für jede Körperfläche und ermögl
 \end{figure}
  
 \subsubsection{Basistransformation}
+\label{sec:basetransform}
+
 
 Um eine Basistransformation zwischen Welt- und lokalem Koordinatensystem durchführen zu können, ist es notwendig, sowohl die Basiseinheitsvektoren des Weltkoordinatensystems als auch die des lokalen Systems zu kennen. Die Basiseinheitsvektoren des globalen Koordinatensystems sind für alle Punkte des STEP-Modells stets dieselben und werden wie folgt definiert.
 
@@ -291,21 +295,21 @@ Die Basis des Weltkoordinatensystems ergibt sich analog zur Basismatrix $B_{UVW}
 	\end{equation} 
 \end{singlespace}
 
-Die Transformationsmatrix um einen Punkt vom globalen in das lokale Koordinatensystem der Ebene zu transformieren, ergibt sich nach \prettyref{eq:trafoXYZ2UVW}.
+Die Transformationsmatrix um einen Punkt vom globalen in das lokale Koordinatensystem der Ebene zu transformieren, ergibt sich nach \prettyref{eq:matrixXYZ2UVW}.
 
-\begin{equation}\label{eq:trafoXYZ2UVW}
+\begin{equation}\label{eq:matrixXYZ2UVW}
 T_{xyz \rightarrow uvw} = B_{uvw}^{-1} \cdot B_{xyz}  
 \end{equation}   
 
-Die Transformationsmatrix, um einen Punkt wieder aus dem lokalen Koordinatensystem der Ebene zurück in das globale System zu überführen, ergibt sich nach \prettyref{eq:trafoUVW2XYZ} aus der Inversen der Transformationsmatrix aus \prettyref{eq:trafoXYZ2UVW}.
+Die Transformationsmatrix, um einen Punkt wieder aus dem lokalen Koordinatensystem der Ebene zurück in das globale System zu überführen, ergibt sich nach \prettyref{eq:matrixUVW2XYZ} aus der Inversen der Transformationsmatrix aus \prettyref{eq:matrixXYZ2UVW}.
 
 \begin{equation}\label{eq:trafoUVW2XYZ}
 T_{uvw \rightarrow xyz} = T_{xyz \rightarrow uvw}^{-1} 
 \end{equation}   
 
-Hat man einen Punkt $\vv{p_{xyz}}$ in globale Koordinaten gegeben, so berechnet sich seine Position im lokalen Koordinatensystem entsprechend \prettyref{eq:pxyz2puvw}. 
+Hat man einen Punkt $\vv{p_{xyz}}$ in globale Koordinaten gegeben, so berechnet sich seine Position im lokalen Koordinatensystem entsprechend \prettyref{eq:trafoxyz2uvw}. 
 
-\begin{equation}\label{eq:pxyz2puvw}
+\begin{equation}\label{eq:trafoxyz2uvw}
 \vv{p_{uvw}}=T_{xyz \rightarrow uvw} \cdot \vv{p_{xyz}}
 \end{equation}
 
@@ -320,19 +324,63 @@ Die Anwendung dieser Matrizen erfolgt in der Klasse \textit{StpCartesianPoint} i
 
 \subsubsection{Diskretisierung zylindrischer Flächen}
 
-lalalalalalal
+Zylindrische ADVANCED\_FACEs werden in einer STEP-Datei durch eine CYLINDRICAL\_SURFACE und zwei definiert. Dabei entspricht die CYLINDRICAL\_SURFACE, wie in prettyref{sec:erklaerungstp} bereits erläutert, der Mantelfläche des Zylinders. Die Begrenzungen des Zylinders ergeben sich aus der Lage der beiden Kreise (STEP-Entität CIRCLE), die als FACE\_OUTER\_BOUNDs in der STEP-Datei formuliert sind. Der Abstand der beiden Kreise ergibt somit die gesamte Länge der zylindrischen Körperfläche.
+
+Um eine zylindrische ADVANCED\_FACE zu diskretisieren müssen die Positionen der CYLINDRICAL\_SURFACE und der CIRCLEs, gegeben durch jeweils ein AXIS2\_PLACEMENT\_3D gefunden werden. Im Anschluss werden diese Positionen aus dem globalen in ein lokales Koordinatensystem transformiert. Dies ermöglicht einen generalisierten Diskretisierungsvorgang für Zylinder, unabhängig von ihrer Lage im Raum. Die Transformationsmatrix für eine  CYLINDRICAL\_SURFACE ergibt sich, wie im vorherigen Abschnitt \ref{sec:basetransform} beschrieben.  
 
 \begin{figure}[h]
 	\centering
 	
-	\includegraphics[width=0.7\linewidth]{img/trafozylinder.pdf}
+	\includegraphics[width=0.8\linewidth]{img/trafozylinder.pdf}
 	
 	\caption{Koordinatentransformation CYLINDRICAL\_SURFACE}
 	\label{fig:trafozylinder}
 	
 \end{figure}
 
-lalalalalala
+Die Abwicklung der zylindrischen Mantelfläche ergibt ein Rechteck. Dieses entspricht in seiner Breite dem Umfang des Kreisprofils des Zylinders und in der Höhe der Länge des Zylinders. Eine Rechteckfläche ist sehr einfach durch ein gleichmäßiges Punkteraster zu diskretisieren. Dabei ist es notwendig zuerst die Abwicklung durchzuführen. Über die Transformation der lokalen kartesischen Koordinaten in u-, v- und w-Richtung in lokale zylindrische Koordinaten soll dies umgesetzt werden. Nach erfolgter Transformation in das zylindrische Koordinatensystem kann jeder Punkt auf der Zylinderoberfläche als Punkt auf der abgewickelten Mantelfläche in zylindrischen Koordinaten ausgedrückt werden. \prettyref{fig:discretzylinder} soll den Sachverhalt darstellen. 
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=0.8\linewidth]{img/discretzylinder.pdf}
+	
+	\caption{Abwicklung und Diskretisierung einer zylindrischen Körperfläche}
+	\label{fig:discretzylinder}
+	
+\end{figure}
+
+Die Transformation eines kartesischen Punktes der Zylinderoberfläche kann mit den folgenden Formeln in einen Punkt in zylindrischen Koordinaten umgerechnet werden.
+Wenn gilt 
+\begin{singlespace}
+ \begin{equation}
+ 	\begin{aligned}
+	 	\vv{p_{uvw}} = \begin{pmatrix}
+	 	u & v & w
+	 	\end{pmatrix}^T \\
+	 	\vv{p_{r\varphi w}} = \begin{pmatrix}
+	 	r & \varphi & w
+	 	\end{pmatrix}^T	 	 	
+	 \end{aligned}
+ \end{equation}
+\end{singlespace}
+dann ergeben sich die zylindrischen Koordinaten bei gegebenen kartesischen Koordinaten nach
+\begin{equation}	
+	\begin{aligned}
+		r &= \sqrt{u^2 + v^2} \\
+		\varphi &= {\arctan{\frac{v}{u}}}
+	\end{aligned}	
+\end{equation}. Der Wert in w-Richtung ändert sich dabei nicht.
+
+Analog dazu lässt sich auch die Rücktransformation in kartesische Koordianten bei gegebenen zylindrischen Koordinaten durchführen. Auch dabei ändert sich die w-Koordinate nicht.
+\begin{equation}\label{eq:cyl2uvw}	
+	\begin{aligned}
+		u &= r \cdot \cos{\varphi}  \\
+		v &= r \cdot \sin{\varphi}
+	\end{aligned}	
+\end{equation}
+
+Um die Diskretisierung einer gegebenen zylindrischen ADVANCED\_FACE durchzuführen ist es also notwendig, diese abgewickelte Rechteckfläche mit einem Punkteraster zu versehen. Der Nutzer kann dabei angeben, in wieviele axiale Ringe und wieviele Zylindersegmente die Fläche zerlegt werden soll. Aufgrund dieses Angaben wird das Punkteraster entsprechend erstellt. Das Programm berechnet aus der gewünschten Anzahl der Ringe die Abstände in w-Richtung, aus der Angabe der Anzahl der Zylindersegmente den Abstand in $\varphi$-Richtung. Beginnend bei der w-Koordinate des Mittelpunkts des ersten CIRCLEs und der Winkelkoordiante $\varphi = 0$ wird das Raster bis zur w-Koordinate des zweiten CIRCLEs und $\varphi = 2\pi$ in den benötigten Abständen aufgezogen. Jeder erzeugt Punkt des Rasters wird in die Punktewolke der ADVANCED\_FACE gespeichert und kann bei Deformation der Fläche verändert werden. 
 
 \subsubsection{Diskretisierung planarer Flächen}
 
@@ -380,41 +428,16 @@ Um das Innere des Polygons zu diskretisieren, muss zunächst das umgrenzende Rec
 	
 \end{figure}
 
-Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygonal) liegen, sollen aus der bestehenden Punktewolke der betreffenden \textit{ADVANCED\_FACE} entfernt werden. Dazu wird für jeden bestehenden Punkt geprüft, ob dies der Fall ist. Um allerdings die Kanten negativer Umrandungen in der Punktewolke zu behalten, werden diese entsprechend der Parameter unterteilt und der Punktwolke hinzugefügt.       
-
-
-
-
-
-
-
-
-   
-
-
-
-
-      
-
-
-
-
-  
-
-
-
-       
- 
-
-
-
-
-
-
+Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygonal) liegen, sollen aus der bestehenden Punktewolke der betreffenden \textit{ADVANCED\_FACE} entfernt werden. Dazu wird für jeden bestehenden Punkt geprüft, ob dies der Fall ist. Um allerdings die Kanten negativer Umrandungen in der Punktewolke zu behalten, werden diese entsprechend der Parameter unterteilt und der Punktwolke hinzugefügt.
 
 \subsection{Deformation der Körperflächen}
 
 \subsection{Ausgabe der verformten Geometrie}
+
+Die verformte Geometrie soll als Ergebnis des Programms in einer ASCII-Textdatei ausgegeben werden. Dafür ist es notwendig, dass für alle erzeugten und deformierten Punkt einer Körperfläche diese wieder zurücktransformiert werden. Dies erfolgt entsprechend der \prettyref{eq:trafoUVW2XYZ}. Für zylindrische ADVANCED\_FACEs ist es notwendig die Rücktransformation in lokale kartesische Koordinaten, wie durch \prettyref{eq:cyl2uvw} beschrieben, vor der Basistransformation durchzuführen. 
+Ziel ist die Ausgabe der x-, y- und z-Koordinate jedes Punktes. Dabei entspricht jede Zeile genau einem Punkt. Die Werte sind durch Semikolons getrennt und in der Reihenfolge x, y und z nebeneinander aufgelistet. Die erzeugt Text-Datei kann im Anschluss im Projektordner  gefunden werden und mit jedem Textprogramm ausgelesen werden. Die Rücktransformation und anschließende Ausgabe der Ergebnispunkte einer jeden \textit{ADVANCED\_FACE} ist in der Funktion \verb|print()| der Klasse \verb|StpAdvancedFace| implementiert.
+
+
 
 
 
