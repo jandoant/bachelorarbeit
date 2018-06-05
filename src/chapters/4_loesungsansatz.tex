@@ -9,7 +9,7 @@ Dafür sind vier Hauptschritte notwendig:
 \begin{enumerate}
 	\item Zerlegung der Eingabegeometrie in einzelne Geometrieelemente
 	\item Erstellung einer idealen Punktewolke für jedes Geometrieelement
-	\item Verschiebung dieser Punkte entsprechend der Deformationsfunktion
+	\item Verschiebung dieser Punkte entsprechend der Deformationsfunktionen
 	\item Ausgabe der veränderten Punktewolken jedes Geometrieelements 
 \end{enumerate}
 
@@ -20,9 +20,7 @@ Die Eingabegeometrie soll vom Nutzer in Form eines CAD-Modells bereitgestellt we
 Diese Idealgeometrie soll im Anschluss durch das entwickelte Programm in Form einer Punktewolke diskretisiert werden. Das ist erforderlich, weil die Beschreibung der Geometrie durch das Programm in einer kontinuierlichen Form erfolgt. Messtechnisch sind allerdings die Raumkoordinaten einzelner Messpunkte von Bedeutung. Eine Diskretisierung kann verschieden detailliert vonstatten gehen. Um eine variable Anpassung des Programms an die Erfordernisse des Nutzers zu ermöglichen, soll die Anzahl der ausgegebenen Ergebnispunkte steuerbar sein. Der Benutzer wird die Möglichkeit erhalten, die dafür notwendigen Diskretisierungsparameter innerhalb des Programms für jedes Geometrieelement selbst zu bestimmen. Dadurch kann die für den jeweiligen Anwendungsfall erforderliche Dichte der Punktewolke angepasst werden.
 
 Es notwendig, dass jeder einzelne Punkt der entstandenen Punktewolke dem jeweiligen Geometrieelement, zu dem er gehört, zugeordnet werden kann. Diese Anforderung ergibt sich, da nach erfolgter Diskretisierung der Geometrieelemente der Nutzer für jede separate Fläche des Körpers die gewünschten Deformationen in Form von Funktionen beaufschlagen können soll. Dadurch werden die einzelnen Elemente der Punktewolke so verändert, dass sie als Ergebnis die verformte Geometrie repräsentieren. 
-Das Programm soll die Punktewolke des verformten Bauteils ausgeben. Dies kann als Ausgangspunkt für weitere Untersuchungen im Rahmen einer Toleranzsimulation verwendet werden. 
-
-In der folgenden Abbildung ist der oben beschriebene Ablaufplan des Programms grafisch dargestellt. Die konkrete Umsetzung der einzelnen Schritte ist in Abbildung XYZ dargelegt.        
+Das Programm soll die Punktewolke des verformten Bauteils ausgeben. Dies kann als Ausgangspunkt für weitere Untersuchungen im Rahmen einer Toleranzsimulation verwendet werden.      
  
 \subsection{Eingabegeometrie} 
 \label{sec:eingabegeometrie}
@@ -39,21 +37,21 @@ Der hauptsächliche Vorteil von STEP-Dateien für das in dieser Arbeit zu entwic
 
 \subsubsection{Aufbau von STEP-Dateien}
 
-Anhang XYZ zeigt den beispielhaften Aufbau einer STEP-Datei. Diese Datei beschreibt einen einfachen Quader mit den Ausmaßen 10 mm in x-Richtung, 15 mm in y-Richtung und 30 mm in z-Richtung. 
+Anhang \ref{sec:anhang} zeigt den beispielhaften Aufbau einer STEP-Datei. Diese Datei beschreibt einen einfachen Quader mit den Ausmaßen 10 mm in x-Richtung, 15 mm in y-Richtung und 30 mm in z-Richtung. 
 
 Aus diesem Codebeispiel ist gut der zeilenweise Aufbau einer STEP-Datei ersichtlich. 
 
 Eine STEP-Datei ist grundsätzlich aus zwei Sektionen aufgebaut. 
 In der HEADER-Sektion, die am Anfang jeder Datei mit dem Schlüsselwort "`HEADER"' eingeleitet wird, stehen Meta-Informationen beispielsweise zum Namen, Ersteller oder Zeitstempel der Datei. Beendet wird diese Sektion mit dem Schlüsselwort "`ENDSECTION"'.
 
-Der zweite Abschnitt besteht aus der sogenannten DATA-Sektion. Beginnend mit dem Schlüsselwort "`DATA"', sind darin die eigentlichen Informationen zur Beschreibung des Objektes zu finden. Für diese Arbeit sind grundsätzlich die Informationen, welche den hierarchisch gegliederten geometrischen Aufbau des beschriebenen Objektes aufzeigen, von Interesse. Auch diese Sektion der Datei wird mit dem Schlüsselwort "`ENDSECTION"' abgeschlossen. Im DATA-Abschnitt sind die Informationen als sogenannte STEP-Entities angegeben. Diese Entities (engl. für Entität, Einheit, Informationsobjekt) sind in der EXPRESS-Auszeichnungssprache verfasst. Jede Einheit wird mit einem "`\#"'-Symbol eingeleitet und einem Semikolon abgeschlossen. Die Zahl nach dem "`\#"'-Symbol stellt einen eindeutigen Bezeichner für diese Entität dar. Dieser tritt nur einmal pro Datei auf und dient der Identifizierung einer bestimmten Instanz der Entität. Es ist zu vermerken, dass sich dieser aber, bei verschiedenen Durchgängen der Erzeugung der STEP-Datei aus dem nativen Format, ändern kann.
+Der zweite Abschnitt besteht aus der sogenannten \textit{DATA}-Sektion. Beginnend mit dem Schlüsselwort "`DATA"', sind darin die eigentlichen Informationen zur Beschreibung des Objektes zu finden. Für diese Arbeit sind grundsätzlich die Informationen, welche den hierarchisch gegliederten geometrischen Aufbau des beschriebenen Objektes aufzeigen, von Interesse. Auch diese Sektion der Datei wird mit dem Schlüsselwort "`ENDSECTION"' abgeschlossen. Im \textit{DATA}-Abschnitt sind die Informationen als sogenannte STEP-Entities angegeben. Diese Entities (engl. für Entität, Einheit, Informationsobjekt) sind in der EXPRESS-Auszeichnungssprache verfasst. Jede Einheit wird mit einem "`\#"'-Symbol eingeleitet und einem Semikolon abgeschlossen. Die Zahl nach dem "`\#"'-Symbol stellt einen eindeutigen Bezeichner für diese Entität dar. Dieser tritt nur einmal pro Datei auf und dient der Identifizierung einer bestimmten Instanz der Entität. Es ist zu vermerken, dass sich dieser aber, bei verschiedenen Durchgängen der Erzeugung der STEP-Datei aus dem nativen Format, ändern kann.
 Des Weiteren ist die Klasse, zu der die Entität gehört, direkt nach dem Gleichheitszeichen zu finden. In den folgenden Klammern sind die zur Instanz gehörenden Argumente aufgeführt. Dabei ist das erste Argument stets der Name der Entität. 
 
 \subsubsection{Beschreibung von STEP-Entitäten}
 
-Um die grundsätzliche Beschreibung von geometrischen Entitäten in STEP Dateien aufzuzeigen, sollen zwei einfache Beispiele herangezogen werden.
+Um die grundsätzliche Beschreibung von geometrischen Entitäten in STEP Dateien aufzuzeigen, sollen zwei simple Beispiele herangezogen werden.
 
-Als sehr einfaches Beispiel lässt sich das \prettyref{lis:simplestp} herbeiziehen. Es beschreibt einen Punkt in Kartesischen Koordinaten (Klasse "`CARTESIAN\_POINT"') mit einer ID von 173 sowie den Koordinaten x = 10,0 mm, y = 15.0 mm und z = 30,0 mm. Weiterhin ist zu erkennen, dass hierbei das Attribut "`name"' leer ist. Dies ist bei den meisten geometrischen Entitäten der Fall. Das ist allerdings nicht von großer Bedeutung, da, wie oben beschrieben, die ID als Identifikator genutzt wird.    
+Als sehr einfaches Beispiel lässt sich das \prettyref{lis:simplestp} herbeiziehen. Es beschreibt einen Punkt in Kartesischen Koordinaten (Entität \textit{CARTESIAN\_POINT}) mit einer ID von 173 sowie den Koordinaten x = 10,0 mm, y = 15,0 mm und z = 30,0 mm. Weiterhin ist zu erkennen, dass hierbei das Attribut \verb|name| leer ist. Dies ist bei den meisten geometrischen Entitäten der Fall. Das ist allerdings nicht von großer Bedeutung, da, wie oben beschrieben, die ID als Identifikator genutzt wird.    
 
 \begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung eines Punktes in STEP, label=lis:simplestp]
 #173=CARTESIAN_POINT('',(10.,15.,30.));
@@ -74,16 +72,16 @@ Ein etwas komplexeres Beispiel, was die in einer STEP-Datei festgehaltene Geomet
 
 Hierbei wird eine Linie im Raum entsprechend beschrieben, deren Anfangspunkt sich bei x = 0 mm, y = 0 mm und z = 0 mm befindet. Der Richtungsvektor dieser Linie zeigt in x = 1 mm, y = 0 mm und z = 0 mm und hat eine Länge von 10 mm.
 
-Es ist zu erkennen, dass sich die Entität der Klasse "`LINE"' (ID = 38) zusammensetzt aus zwei weiteren Entitäten. Die Beschreibung der Linie referenziert IDs der Instanzen der Klasse "`VECTOR"' (ID = 50) sowie "`CARTESIAN\_POINT"' (ID = 183). Der referenzierte Vektor bezieht sich wiederum auf eine Instanz der Klasse "`DIRECTION"' (ID = 154), welche die Richtung des Vektors (x = 1 mm, y = 0 mm, z = 0 mm) beschreibt. Der Vektor hat, gegeben durch sein zweites Argument, eine Länge von 10,0 mm.
+Es ist zu erkennen, dass sich die Entität der Klasse "`LINE"' (ID = 38) zusammensetzt aus zwei weiteren Entitäten. Die Beschreibung der Linie referenziert IDs der Instanzen der Klasse \textit{VECTOR} (ID = 50) sowie \textit{CARTESIAN\_POINT} (ID = 183). Der referenzierte Vektor bezieht sich wiederum auf eine Instanz der Klasse \textit{DIRECTION} (ID = 154), welche die Richtung des Vektors (x = 1 mm, y = 0 mm, z = 0 mm) beschreibt. Der Vektor hat, gegeben durch sein zweites Argument, eine Länge von 10,0 mm.
 
 Die Geometrie, die in einer STEP-DATEI beschrieben wird, setzt sich also, wie oben gezeigt, aus einzelnen Elementen zusammen. Es ist eine eindeutige und definierte Struktur zu erkennen, die ineinander verschachtelt ist. Somit ist gewährleistet, dass diese Struktur im Programm abgebildet werden kann, damit später diskretisierte Punkte den jeweiligen Flächen, die ebenfalls aus anderen Objekten bestehen, eindeutig zugeordnet werden können. 
-In Abschnitt \ref{sec:umsetzung} auf Seite \pageref{sec:umsetzung} wird detailliert darauf eingegangen, wie aus den zeilenweisen Beschreibungen der einzelnen Entitäten der STEP-Datei Java-Objekte erzeugt werden.              
+In Abschnitt \ref{sec:umsetzung} auf Seite \pageref{sec:string2entity} wird detailliert darauf eingegangen, wie aus den zeilenweisen Beschreibungen der einzelnen Entitäten der STEP-Datei Java-Objekte erzeugt werden.              
 
 \subsection{Programmiersprache} 
  
-Das Programm wird in der Programmiersprache Java umgesetzt. Das hat verschiedene Vorteile. Zum Einen sind kompilierte Programme dieser Sprache auf allen Systemen lauffähig. Das macht die Anwendung für eine Vielzahl von Anwendern nutzbar. Perspektivisch können damit sowohl stationäre Computer als auch mobile Endgeräte bedient werden.
+Das Programm wird in der Programmiersprache Java \footnote{Webseite: https://www.java.com/de/} umgesetzt. Das hat verschiedene Vorteile. Zum Einen sind kompilierte Programme dieser Sprache auf allen Systemen lauffähig. Das macht die Anwendung für eine Vielzahl von Anwendern nutzbar. Perspektivisch können damit sowohl stationäre Computer als auch mobile Endgeräte bedient werden.
 
-Des Weiteren basiert die Verwendung der Programmiersprache Java auf einer kostenlosen Distribution. Das bedeutet, dass keine kostenpflichtigen Programme, wie beispielsweise CAD-Systeme oder MATLAB, für die Entwicklung und Ausführung der Software benötigt werden. Dadurch können auch Anwender, die nicht über Lizenzen für entsprechende Programme verfügen, das entwickelte Programm nutzen. Auch dieser Aspekt trägt dazu bei, notwendige Voraussetzungen für den Anwender zu minimieren.
+Des Weiteren basiert die Verwendung der Programmiersprache Java auf einer kostenlosen Distribution. Das bedeutet, dass keine kostenpflichtigen Programme, wie beispielsweise CAD\-Sys\-teme oder MATLAB, für die Entwicklung und Ausführung der Software benötigt werden. Dadurch können auch Anwender, die nicht über Lizenzen für entsprechende Programme verfügen, das entwickelte Programm nutzen. Auch dieser Aspekt trägt dazu bei, notwendige Voraussetzungen für den Anwender zu minimieren.
 
 Auf technischer Seite besteht der hauptsächliche Vorteil von Java im durchgängig objektorientierten Paradigma der Programmiersprache. Da eine STEP-Datei ebenfalls aus einzelnen Objekten zusammengesetzt ist, lässt sich diese Struktur sehr gut in Java-Klassen abbilden. So bleibt der Aufbau der STEP-Geometrie im Programmcode erhalten und nachvollziehbar. 
 Weiterhin ist es mit Java sehr gut und relativ einfach umsetzbar, den erstellten Quellcode zu testen. Dies ermöglicht eine automatisierte Kontrolle der einzelnen Einheiten des Programms. Dadurch soll die Qualität und Stabilität der Implementierung garantiert werden. Die Entwicklung des Programms kann so schneller voranschreiten, da händische Tests durch den Entwickler sehr zeitraubend und unsicher sind. Gerade bei Veränderungen oder Erweiterungen des Programms bieten Tests eine Grundlage für die Verifizierung der Softwaregüte und helfen bei der Erkennung von Fehlern.     

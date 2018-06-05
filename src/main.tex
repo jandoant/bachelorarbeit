@@ -78,9 +78,11 @@
 % -- Mathematikpakete
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{esvect}
 % -- Vektordarstellung
 \usepackage{esvect}
+
+% -- Einheitendarstellung
+\usepackage{siunitx}
 
 % -- Grafikpaket
 \usepackage{graphicx}
@@ -130,12 +132,9 @@
 	% Literaturverzeichnis wird in der Reihenfolge, in der die Referenzen genannt werden sortiert
 	sorting=none,
 	% keine Angabe der URL 		
-	url=false,
-	% Übersicht Biblatex-Styles:
-	% https://de.sharelatex.com/learn/Biblatex_bibliography_styles 			
-	style=ieee,
+	url=true,	
 	% keine Angabe der ISBN 			
-	isbn=false,
+	isbn=true,
 	% Datumsangabe nur für das Erscheiningsjahr
 	date=year,
 	% maximal 6 Namen in der Literaturliste
@@ -143,7 +142,10 @@
 	% mindestens 3 Namen in der Literaturliste    
 	minbibnames=3,
 	% Verwendung von biber.exe
-	backend=biber
+	backend=biber,
+	% Übersicht Biblatex-Styles:
+	% https://de.sharelatex.com/learn/Biblatex_bibliography_styles 
+	style=numeric
 	]{biblatex}
 
 % -- Pfad zur .bib-Datei
@@ -186,7 +188,6 @@
 \newpage
 
 % -- Inhaltsverzeichnis
-
 \pagenumbering{arabic}
 \include{chapters/00_inhaltsverzeichnis}
 \newpage
@@ -196,8 +197,7 @@
 %\include{chapters/sandbox}
 %\newpage
 
-
-\pagestyle{empty}
+\pagestyle{fancy}
 \include{chapters/00_aufgabenstellung}
 \newpage
 
@@ -211,9 +211,6 @@
 \include{chapters/2_0_grundlagen}
 \newpage
 
-% -- Handlungsbedarf / Problem
-
-
 % -- Lösungsansatz/Idee
 \pagestyle{fancy}
 \include{chapters/4_loesungsansatz}
@@ -224,31 +221,30 @@
 \include{chapters/5_umsetzung}
 \newpage
 
-% -- Bewertung des Lösungsansatzes / der Ergebnisse
+% -- Fazit und Ausblick
 \pagestyle{fancy}
 \include{chapters/6_bewertung}
 \newpage
 
-% -- Zusammenfassung und Ausblick
-\pagestyle{fancy}
-\include{chapters/7_ausblick}
+% -- Anhang
+\appendix
+\include{chapters/anhang}
 \newpage
 
 % -- Abbildungsverzeichnis
-\pagestyle{fancy}
+\pagestyle{empty}
 \listoffigures
 \newpage
 
-% -- Selbstständigkeitserklärung
-\pagestyle{empty}
-\include{chapters/00_selbststaendigkeitserklaerung}
-\newpage
-
-
 % -- Literaturverzeichnis
-\pagestyle{fancy}
+\pagestyle{empty}
 \printbibliography[
 	% Literaturverzeichnis im Inhaltsverzeichnis anzeigen 
 	heading=bibintoc]
+	
+% -- Selbstständigkeitserklärung
+\pagestyle{empty}
+\include{chapters/00_selbststaendigkeitserklaerung}
+\newpage	
 
 \end{document}

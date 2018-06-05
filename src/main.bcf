@@ -111,7 +111,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>mincitenames</bcf:key>
-      <bcf:value>3</bcf:value>
+      <bcf:value>1</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>minitems</bcf:key>
@@ -373,7 +373,6 @@
     <bcf:option datatype="boolean">eprint</bcf:option>
     <bcf:option datatype="boolean">related</bcf:option>
     <bcf:option datatype="boolean">subentry</bcf:option>
-    <bcf:option datatype="boolean">dashed</bcf:option>
     <bcf:option datatype="integer">mincrossrefs</bcf:option>
     <bcf:option datatype="integer">minxrefs</bcf:option>
     <bcf:option datatype="integer">maxnames</bcf:option>
@@ -1924,6 +1923,48 @@
     <bcf:datasource type="file" datatype="bibtex">bib/lit.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+    <bcf:citekey order="1">DIN.4760</bcf:citekey>
+    <bcf:citekey order="2">DIN.8785</bcf:citekey>
+    <bcf:citekey order="3">Denkena.2011</bcf:citekey>
+    <bcf:citekey order="4">Neugebauer.2012</bcf:citekey>
+    <bcf:citekey order="5">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="6">Denkena.2011</bcf:citekey>
+    <bcf:citekey order="7">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="8">Paucksch.2008</bcf:citekey>
+    <bcf:citekey order="9">Denkena.2011</bcf:citekey>
+    <bcf:citekey order="10">Paucksch.2008</bcf:citekey>
+    <bcf:citekey order="11">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="12">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="13">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="14">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="15">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="16">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="17">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="18">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="19">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="20">Schonherr.2002</bcf:citekey>
+    <bcf:citekey order="21">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="22">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="23">Paucksch.2008</bcf:citekey>
+    <bcf:citekey order="24">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="25">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="26">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="27">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="28">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="29">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="30">Denkena.2011</bcf:citekey>
+    <bcf:citekey order="31">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="32">Meyer.2013</bcf:citekey>
+    <bcf:citekey order="33">Denkena.2011</bcf:citekey>
+    <bcf:citekey order="34">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="35">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="36">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="37">Dietrich.2014</bcf:citekey>
+    <bcf:citekey order="38">Winkler.1990</bcf:citekey>
+    <bcf:citekey order="39">StepDoc</bcf:citekey>
+    <bcf:citekey order="40">DIN.4760</bcf:citekey>
+    <bcf:citekey order="41">DIN.8785</bcf:citekey>
+    <bcf:citekey order="42">Kalos.2008</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
