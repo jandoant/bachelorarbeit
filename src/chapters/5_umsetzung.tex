@@ -119,7 +119,7 @@ Definiert einen Punkt des Bauteils im Raum. Dieser wird definiert durch einen \t
 
 \paragraph{EDGE\_CURVE}
 
-Beschreibt eine Körperkante. Dabei kann es sich um verschiedene Kantentypen, wie Kreise, Linien oder Splines  handeln. Definiert werden Anfangs- und Endpunkt der \textit{EDGE\_CURVE}. Diese werden als Körperpunkte (VERTEX) definiert. Handelt es sich um eine geschlossene Kante, beispielsweise einen Kreis, dann sind Anfangs- und Endvertex identisch. Außerdem weist eine \textit{EDGE\_CURVE} eine Orientierung auf. Diese wird durch einen boolschen Wert (wahr oder falsch) angegeben und definiert so eindeutig Anfangs- bzw. Endpunkt der Körperkante.   
+Beschreibt eine Körperkante. Dabei kann es sich um verschiedene Kantentypen, wie Kreise, Linien oder Splines  handeln. Definiert werden Anfangs- und Endpunkt der \textit{EDGE\_CURVE}. Diese werden als Körperpunkte (\textit{VERTEX}) definiert. Handelt es sich um eine geschlossene Kante, beispielsweise einen Kreis, dann sind Anfangs- und Endvertex identisch. Außerdem weist eine \textit{EDGE\_CURVE} eine Orientierung auf. Diese wird durch einen boolschen Wert (wahr oder falsch) angegeben und definiert so eindeutig Anfangs- bzw. Endpunkt der Körperkante.   
 
 \paragraph{EDGE\_LOOP}
 
@@ -135,7 +135,7 @@ Definiert die innere Umrandung einer Körperfläche einer \textit{EDGE\_LOOP}. D
 
 \paragraph{ADVANCED\_FACE}
 
-Beschreibt eine tatsächliche Körperfläche des in der STEP-Datei formulierten Bauteils. Definiert ist die Fläche zum einen durch eine Liste an Umrandungen (BOUNDs) zum anderen durch die Angabe einer PLANE bzw. \textit{CYLINDRICAL\_SURFACE}, in welcher diese Umrandungen liegen. Diese Körperflächen sind in ihrer räumlichen Ausdehnung begrenzt. Die Menge aller \textit{ADVANCED\_FACE}s einer STEP-Datei ergeben zusammengesetzt das beschriebene Modell des Bauteils. 
+Beschreibt eine tatsächliche Körperfläche des in der STEP-Datei formulierten Bauteils. Definiert ist die Fläche zum einen durch eine Liste an Umrandungen (\textit{BOUND}s) zum anderen durch die Angabe einer PLANE bzw. \textit{CYLINDRICAL\_SURFACE}, in welcher diese Umrandungen liegen. Diese Körperflächen sind in ihrer räumlichen Ausdehnung begrenzt. Die Menge aller \textit{ADVANCED\_FACE}s einer STEP-Datei ergeben zusammengesetzt das beschriebene Modell des Bauteils. 
 
 Abbildung \ref{fig:advancedfaceentity} zeigt den Aufbau einer planaren ADVANCED\_FACE aus einer äußeren Umrandung in Form eines Polygons (EDGE\_LOOP aus mehreren LINE-Entitäten) und einer inneren Umrandung durch einen Kreis.  
 
@@ -144,7 +144,7 @@ Abbildung \ref{fig:advancedfaceentity} zeigt den Aufbau einer planaren ADVANCED\
 	
 	\includegraphics[width=\linewidth]{img/advancedface_entity.pdf}
 	
-	\caption{Visualisierung planare ADVANCED\_FACE}
+	\caption{Visualisierung planare \textit{ADVANCED\_FACE}}
 	\label{fig:advancedfaceentity}
 	
 \end{figure}
@@ -335,7 +335,7 @@ Um eine zylindrische \textit{ADVANCED\_FACE} zu diskretisieren, müssen die Posi
 	
 	\includegraphics[width=\linewidth]{img/trafozylinder.pdf}
 	
-	\caption{Koordinatentransformation CYLINDRICAL\_SURFACE}
+	\caption{Koordinatentransformation \textit{CYLINDRICAL\_SURFACE}}
 	\label{fig:trafozylinder}
 	
 \end{figure}
@@ -388,7 +388,7 @@ Um die Diskretisierung einer gegebenen zylindrischen \textit{ADVANCED\_FACE} dur
 \subsubsection{Diskretisierung planarer Flächen}
 \label{sec:discreteplanar}
 
-Planare \textit{ADVANCED\_FACE}s werden in STEP durch die \textit{PLANE}, auf der sie liegen, und einer bestimmten Anzahl an Umrandungen beschrieben. Die Menge aller Punkte, die zu dieser \textit{ADVANCED\_FACE} gehören, ergibt sich aus der Schnittmenge aller Punkte der PLANE und den Punkten innerhalb der positiven Umrandungen (\textit{FACE\_OUTER\_BOUND}s) ohne die Punkte, die innerhalb der negativen Umrandung liegen. 
+Planare \textit{ADVANCED\_FACE}s werden in STEP durch die \textit{PLANE}, auf der sie liegen, und einer bestimmten Anzahl an Umrandungen beschrieben. Die Menge aller Punkte, die zu dieser \textit{ADVANCED\_FACE} gehören, ergibt sich aus der Schnittmenge aller Punkte der \textit{PLANE} und den Punkten innerhalb der positiven Umrandungen (\textit{FACE\_OUTER\_BOUND}s) ohne die Punkte, die innerhalb der negativen Umrandung liegen. 
 Dies ist durch folgende Abbildung zu visualisieren.
 
 \begin{figure}[h]
@@ -436,86 +436,170 @@ Alle Punkte, die innerhalb einer negativen Umrandung (kreisförmig oder polygona
 
 \subsection{Deformation der Körperflächen}
 
-Die Deformation der einzelnen Punkte einer Körperfläche wird über die Anwendung dreidimensionaler Funktionen realisiert. Die Punkt liegen zu diesem Zeitpunkt des Programmablaufs in lokalen Koordinaten vor. Dabei haben Punkte, die auf einer \textit{PLANE} liegen Koordinaten in u-, v- und w-Richtung. Bei diesen werden die Werte in w-Richtung durch die jeweilige Deformationsfunktion der Form $w = w_0 + f(u,v)$ verändert. Punkte, welche auf einer \textit{CYLINDRICAL\_SURFACE} liegen haben hingegen lokale Koordianten in $\varphi$-, w- und r-Richtung. Die R-Koordinate wird dabei durch eine Deformationsfunktion der Form $r=r_0+f(\varphi, w)$ berechnet. Die Werte $w_0$ bzw. $r_0$ stellen dabei den Wert der jeweiligen Koordinate vor Anwendung der Deformation dar.
+Die Deformation der einzelnen Punkte einer Körperfläche wird über die Anwendung dreidimensionaler Funktionen realisiert. Die Punkte liegen zu diesem Zeitpunkt des Programmablaufs in lokalen Koordinaten vor. Dabei haben Punkte, die auf einer \textit{PLANE} liegen, Koordinaten in u-, v- und w-Richtung. Bei diesen werden die Werte in w-Richtung durch die jeweilige Deformationsfunktion der Form $w = w_0 + f(u,v)$ verändert. Punkte, welche auf einer \textit{CYLINDRICAL\_SURFACE} liegen, haben hingegen lokale Koordinaten in $\varphi$-, w- und r-Richtung. Die R-Koordinate wird dabei durch eine Deformationsfunktion der Form $r=r_0+f(\varphi, w)$ berechnet. Die Werte $w_0$ bzw. $r_0$ stellen dabei den Wert der jeweiligen Koordinate vor Anwendung der Deformation dar.
 Es können für jede Körperfläche unterschiedlich viele Deformationen beaufschlagt werden. Dies führt zu einer Kumulation der Verschiebungen. Damit kann man unterschiedliche Oberflächenabweichungen überlagern.
-Die verschiedenen Deformationsfunktionen sind im Quellcode unter dem Projektordner \textit{"`./src/\-main/\-java/\-com.jandoant/deformation"'} zu finden. Jede Klasse in diesem Ordner stellt jeweils eine Deformationsfunktion dar. Diese implementieren alle das Interface \verb|DeformationFunction| im selben Ordner. Das dient dazu, dass alle Deformationsfunktionen der oben beschriebenen Form entsprechen und der Funktionswerts stets von zwei Variablen abhängig ist. Zur Anwendung kommt eine Deformationsfunktion durch den Aufruf der Methode \verb|applyDeformationFunction(DeformationFunction df)| der Klasse \verb|StpAdvancedFace| im Ordner \textit{"`./src/\-main/\-java/\-com.jandoant/stp\_entites"'}. Durch die Anwendung der Funktion addieren sich die dritte Koordinate des jeweiligen Punktes und der Funktionswert der Deformationsfunktion an der Stelle des Punktes. So wird die w- bzw. $\varphi$-Koordinate des durch die Deformation verschobenen Punktes gebildet. Im Programm sind ein paar beispielhafte Funktionen definiert. Aufgabe einer Weiterentwicklung des Programms besteht in der Erweiterung und Optimierung dieses Angebotes an Deformationsfunktionen um Oberflächenabweichungen realistisch abbilden zu können.
+Die verschiedenen Deformationsfunktionen sind im Quellcode unter dem Projektordner \textit{"`./src/\-main/\-java/\-com.jandoant/deformation"'} zu finden. Jede Klasse in diesem Ordner stellt jeweils eine Deformationsfunktion dar. Diese implementieren alle das Interface \verb|DeformationFunction| im selben Ordner. Das dient dazu, dass alle Deformationsfunktionen der oben beschriebenen Form entsprechen und der Funktionswert stets von zwei Variablen abhängig ist. Zur Anwendung kommt eine Deformationsfunktion durch den Aufruf der Methode \verb|applyDeformationFunction(DeformationFunction df)| der Klasse \verb|StpAdvancedFace| im Ordner \textit{"`./src/\-main/\-java/\-com.jandoant/stp\_entites"'}. Durch die Anwendung der Funktion addieren sich die dritte Koordinate des jeweiligen Punktes und der Funktionswert der Deformationsfunktion an der Stelle des Punktes. So wird die w- bzw. $\varphi$-Koordinate des durch die Deformation verschobenen Punktes gebildet. Im Programm sind ein paar beispielhafte Funktionen definiert. Aufgabe einer Weiterentwicklung des Programms ist Erweiterung und Optimierung dieses Angebotes an Deformationsfunktionen, um Oberflächenabweichungen realistisch abbilden zu können.
 
 Im Folgenden sollen die bereits implementierten Funktionen kurz vorgestellt werden. Dabei werden die Funktionen zur Veränderung planarer Flächen dargestellt. Diese lassen sich aber ebenfalls für zylindrische Flächen anwenden, wenn man u- und v-Koordinate jeweils durch $\varphi$ und w-Koordinate des Zylinders ersetzt. 
 
 \paragraph{Konstanter Faktor} Auf die Fläche wird ein konstantes Offset aufgegeben. Bei ebenen Flächen führt dies zu einer Absenkung oder Anhebung der Fläche in Normalenrichtung der Ebene. Bei Zylindrischen Flächen führt die Anwendung zu einer Erhöhung oder Verringerung des Radius. 
 Die Funktion folgt der folgenden Vorschrift. Sie ist implementiert in der Klasse \verb|DeformConstant| und erhält als Parameter den zu verwendenden konstanten Wert. 
 \begin{equation}\label{eq:constant}
-	f(u,v) = \mathrm{c_0}
+	w=f(u,v) = \mathrm{c_0}
 \end{equation}
 
-\paragraph{Linear in einer Richtung} Wird auf eine ebene Fläche diese Funktion aufgegeben, dann bildet sich eine schiefe Ebene in der angegebenen Richtung. Bei der Anwendung der Funktion auf zylindrische Flächen ergibt nur die Anwendung in axialer Richtung Sinn. So kann bei zylindrischen Flächen eine konische Form hergestellt werden. Die Funktion folgt der folgenden Vorschrift und erhält als Parameter den Anstieg $\mathrm{c_1}$, die Verschiebung $\mathrm{c_0}$ der Punkte senkrecht zur Ebene bzw. Achse und die Richtung der Neigung. 
+\paragraph{Linear in einer Richtung} Wird auf eine ebene Fläche diese Funktion aufgegeben, dann bildet sich eine schiefe Ebene in der angegebenen Richtung. Bei der Verwendung der Funktion auf zylindrische Flächen ergibt nur die Anwendung in axialer Richtung Sinn. So kann bei zylindrischen Flächen eine konische Form hergestellt werden. Die Funktion folgt der folgenden Vorschrift und erhält als Parameter den Anstieg $\mathrm{c_1}$, die Verschiebung $\mathrm{c_0}$ der Punkte senkrecht zur Ebene bzw. Achse und die Richtung der Neigung. 
 
 \begin{equation}	
 	\begin{aligned}\label{eq:linear}
-		f(u,v) = \mathrm{a_1}\cdot u+\mathrm{c_0}&&\mathrm{bzw.}&&f(u,v) = \mathrm{a_1}\cdot v+\mathrm{c_0}
+		w=f(u,v) = \mathrm{a_1}\cdot u+\mathrm{c_0}&&\mathrm{bzw.}&&w=f(u,v) = \mathrm{a_1}\cdot v+\mathrm{c_0}
 	\end{aligned}
 \end{equation}
 
-Abbildung XYZ stellt die Funktion grafisch dar. Implementiert ist die Funktion in der Klasse \verb|DeformLinear|.
+\prettyref{fig:linearufig} und \prettyref{fig:linearvfig} stellen die Funktion grafisch dar. Implementiert ist die Funktion in der Klasse \verb|DeformLinear|.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {-x};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für lineare Deformation in u-Richtung}
+	\label{fig:linearufig}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {3*y+4};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für lineare Deformation in v-Richtung}
+	\label{fig:linearvfig}
+\end{figure}
 
 \paragraph{Linear in zwei Richtungen} Ähnlich wie bei der vorher beschriebenen Funktion erzeugt diese Deformation eine schiefe Ebene. Allerdings ist die erzeugte Fläche in zwei verschiedenen Richtungen geneigt. Sie folgt der folgenden Gleichung. 
 
 \begin{equation}\label{eq:bilinear}
-f(u,v) = \mathrm{a_1}\cdot u+ \mathrm{b_1}\cdot v+\mathrm{c_0}
+w=f(u,v) = \mathrm{a_1}\cdot u+ \mathrm{b_1}\cdot v+\mathrm{c_0}
 \end{equation} 
 
-Diese Funktion ist implementiert in der Klasse \verb|DeformBiLinear|. Sie erhält die Parameter $\mathrm{a_1}$, $\mathrm{b_1}$ und $\mathrm{c_0}$. Diese Funktion wird in Abbildung XYZ visualisiert.
+Diese Funktion ist implementiert in der Klasse \verb|DeformBiLinear|. Sie erhält die Parameter $\mathrm{a_1}$, $\mathrm{b_1}$ und $\mathrm{c_0}$. Diese Funktion wird in \prettyref{fig:bilinearfig} visualisiert.
 
-\paragraph{Quadratisch in einer Richtung} Diese Deformationsfunktion funktioniert analog zur linearen Deformation in einer Richtung. Es wird eine gekrümmte Fläche hergestellt. Bei zylindrischen Flächen ergibt sich eine ballige Form, wenn die Funktion in axialer Richtung angewendet wird. Die Funktion wird nach der \prettyref{eq:quadratic} gebildet und ist in der Klasse \verb|DeformQuadratic| implementiert.Übergeben werden die Parameter $\mathrm{a_2}$, $\mathrm{a_1}$ und $\mathrm{c_0}$.  
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+		xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+		\addplot3[surf,shader=faceted] {2*x + 3*y+2};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für bilineare Deformation}
+	\label{fig:bilinearfig}
+\end{figure}
+
+\paragraph{Quadratisch in einer Richtung} Diese Deformationsfunktion funktioniert analog zur linearen Deformation in einer Richtung. Es wird eine gekrümmte Fläche hergestellt. Bei zylindrischen Flächen ergibt sich eine ballige Form, wenn die Funktion in axialer Richtung angewendet wird. Die Funktion wird nach der \prettyref{eq:quadratic} gebildet und ist in der Klasse \verb|DeformQuadratic| implementiert. Übergeben werden die Parameter $\mathrm{a_2}$, $\mathrm{a_1}$ und $\mathrm{c_0}$.  
 
 \begin{equation}\label{eq:quadratic}
 	\begin{aligned}
-		f(u,v) = \mathrm{a_2}\cdot u^2+ \mathrm{a_1}\cdot u+\mathrm{c_0}&&\mathrm{bzw.}&&f(u,v) = \mathrm{a_2}\cdot v^2+ \mathrm{a_1}\cdot v+\mathrm{c_0} 
+		w=f(u,v) = \mathrm{a_2}\cdot u^2+ \mathrm{a_1}\cdot u+\mathrm{c_0}&&\mathrm{bzw.}&&f(u,v) = \mathrm{a_2}\cdot v^2+ \mathrm{a_1}\cdot v+\mathrm{c_0} 
 	\end{aligned}
-\end{equation}  
-
-\paragraph{Quadratisch in zwei Richtungen} Diese Funktion kann verwendet werden, um eine konvexe bzw. konkave Fläche herzustellen. Sie ergibt sich nach \prettyref{eq:biquadratic} und kann wird in Abbildung XYZ visualisiert. Die Deformation ist in der Klasse \verb|DeformBiQuadratic| implementiert und erhält als Parameter die Koeffizienten $\mathrm{a_i}$, $\mathrm{b_i}$ und $\mathrm{c_0}$.
-
-\begin{equation}\label{eq:biquadratic}
- f(u,v) = \mathrm{a_2}\cdot u^2+ \mathrm{a_1}\cdot u+\mathrm{b_2}\cdot v^2+ \mathrm{b_1}\cdot v+\mathrm{c_0}
-\end{equation}  
-
-\paragraph{Sinusform in einer Richtung} Um eine wellenförmige Oberfläche zu erzeugen kann diese Deformationsfunktion angewendet werden. Sie folgt der \prettyref{eq:sine} und erhält als Parameter die Werte für Amplitude $\mathrm{a_0}$, Periode $\mathrm{p}$ und Phasenverschiebung $\mathrm{\phi_0}$. 
-
-\begin{equation}\label{eq:sine}
-f(u,v) = \mathrm{a_0} \cdot \sin\left(\frac{p}{2\pi}\cdot x-\frac{2\pi \cdot \phi_0}{p}\right)
 \end{equation} 
 
-Die Funktion ist in der Klasse \verb|DeformUniDirectionalSine| implementiert und kann folgendermaßen visualisiert werden.
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {0.5*x*x + 1*x -4};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für quadratische Deformation in u-Richtung}
+	\label{fig:quadraticu}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {-0.5*y*y + 1*y +50};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für quadratische Deformation in v-Richtung}
+	\label{fig:quadraticv}
+\end{figure} 
+
+\clearpage
+\paragraph{Quadratisch in zwei Richtungen} Diese Funktion kann verwendet werden, um eine konvexe bzw. konkave Fläche herzustellen. Sie ergibt sich nach \prettyref{eq:biquadratic} und kann wie in \prettyref{fig:biquadraticfig} visualisiert werden. Die Deformation ist in der Klasse \verb|DeformBiQuadratic| implementiert und erhält als Parameter die Koeffizienten $\mathrm{a_i}$, $\mathrm{b_i}$ und $\mathrm{c_0}$.
+
+\begin{equation}\label{eq:biquadratic}
+w=f(u,v) = \mathrm{a_2}\cdot u^2+ \mathrm{a_1}\cdot u+\mathrm{b_2}\cdot v^2+ \mathrm{b_1}\cdot v+\mathrm{c_0}
+\end{equation} 
 
 
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {-3*x^2+x-2*y^2-4*x+100};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für biquadratische Deformation}
+	\label{fig:biquadraticfig}
+\end{figure}  
 
 
+\paragraph{Sinusform in einer Richtung} Um eine wellenförmige Oberfläche zu erzeugen kann diese Deformationsfunktion angewendet werden. Sie folgt der \prettyref{eq:sine} und erhält als Parameter die Werte für Amplitude $\mathrm{a_0}$, Periode $\mathrm{p}$, Phasenverschiebung $\mathrm{\phi_0}$ und dem Offset in w-Richtung $\mathrm{c_0}$ . 
 
+\begin{equation}\label{eq:sine}
+w=f(u,v) = \mathrm{a_0} \cdot \sin\left(\frac{p}{2\pi}\cdot x-\frac{2\pi \cdot \phi_0}{p}\right)+\mathrm{c_0}
+\end{equation} 
 
+Die Funktion ist in der Klasse \verb|DeformUniDirectionalSine| implementiert und kann durch \prettyref{fig:sineu} oder \prettyref{fig:sinev} werden.
 
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {0.3*sin(deg(x))};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für sinusförmige Deformation in u-Richtung}
+	\label{fig:sineu}
+\end{figure} 
 
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	grid=both,
+	xlabel=$u$, ylabel=$v$, zlabel=$w$ ]
+	\addplot3[surf,shader=faceted] {-1*sin(deg(0.8*y))};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Beispiel für sinusförmige Deformation in v-Richtung}
+	\label{fig:sinev}
+\end{figure} 
 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
+\clearpage
 \subsection{Ausgabe der verformten Geometrie}
 
 Die verformte Geometrie soll als Ergebnis des Programms in einer ASCII-Textdatei ausgegeben werden. Dafür ist es notwendig, dass für alle erzeugten und deformierten Punkte einer Körperfläche diese wieder zurücktransformiert werden. Dies erfolgt entsprechend der \prettyref{eq:trafouvw2xyz}. Für zylindrische \textit{ADVANCED\_FACE}s ist es notwendig, die Rücktransformation in lokale kartesische Koordinaten, wie durch \prettyref{eq:cyl2uvw} beschrieben, vor der Basistransformation durchzuführen. 
-Ziel ist die Ausgabe der x-, y- und z-Koordinate jedes Punktes. Dabei entspricht jede Zeile genau einem Punkt. Die Werte sind durch Semikolon getrennt und in der Reihenfolge x, y und z nebeneinander aufgelistet. Die erzeugte Text-Datei kann im Anschluss im Projektordner  gefunden werden und mit jedem Textprogramm ausgelesen werden. Die Rücktransformation und anschließende Ausgabe der Ergebnispunkte einer jeden \textit{ADVANCED\_FACE} ist in der Funktion \verb|print()| der Klasse \verb|StpAdvancedFace| implementiert.
+Ziel ist die Ausgabe der x-, y- und z-Koordinate jedes Punktes. Dabei entspricht jede Zeile genau einem Punkt. Die Werte sind durch Semikolon getrennt und in der Reihenfolge x, y und z nebeneinander aufgelistet. Die erzeugte Text-Datei kann im Anschluss im Projektordner \textit{"`./src/\-main/\-java/\-com.jandoant/results"'} gefunden und mit jedem Textprogramm ausgelesen werden. Die Rücktransformation und anschließende Ausgabe der Ergebnispunkte einer jeden \textit{ADVANCED\_FACE} ist in der Funktion \verb|print()| der Klasse \verb|StpAdvancedFace| implementiert.
 
 \subsection{Erläuterung eines beispielhaften Programmablaufs}
 
@@ -536,7 +620,7 @@ Weiterhin werden aufgrund der Vereinfachung des Programms, alle zylindrischen Fl
 Im folgenden Programmschritt werden die Elemente der Punktewolke der \textit{ADVANCED\_FACE}s entsprechend der angewandten Deformationsfunktionen verformt. In diesem Beispielprogramm werden die ersten drei \textit{ADVANCED\_FACE}s des Bauteils mit verschiedenen Deformationsfunktionen beaufschlagt. Über die Funktion \verb|applyDeformationFunction(DeformationFunction df)| der Klasse \verb|StpAdvancedFace| wird eine der möglichen Deformationsfunktionen angewandt.
 Werden mehrere Funktionen für eine \textit{ADVANCED\_FACE} benutzt, summiert sich ihre Wirkung. 
 
-Im letzten Schritt des Programms werden die Koordinaten der Elemente aller Punktewolken des Modells in einer Text-Datei ausgegeben. Dabei werden alle Punkte wieder in das Weltkoordinatensystem transfomiert und anschließend in die Text-Datei geschrieben. Die erzeugte Datei ist im Ordner {"`./src/\-main/\-java/\-com.jandoant/results"'} zu finden. 
+Im letzten Schritt des Programms werden die Koordinaten der Elemente aller Punktewolken des Modells in einer Text-Datei ausgegeben. Dabei werden alle Punkte wieder in das Weltkoordinatensystem transformiert und anschließend in die Text-Datei geschrieben. Die erzeugte Datei ist im Ordner {"`./src/\-main/\-java/\-com.jandoant/results"'} zu finden. 
 
  
 

@@ -59,7 +59,7 @@ Als Minimalbeispiel lässt sich das \prettyref{lis:simplestp} herbeiziehen. Es b
 
 Ein etwas komplexeres Beispiel, was die in einer STEP-Datei festgehaltene Geometrie-Struktur aufzeigen soll, lässt sich in \prettyref{lis:exmpllinestp} beobachten. Dieser Ausschnitt aus einer STEP-Datei zeigt die Beziehung zwischen den Entitäten. 
 
-
+\begin{lstfloat}
 \begin{lstlisting}[captionpos=b, style=customc, caption=Beschreibung einer Linie in STEP, label=lis:exmpllinestp]
 #38=LINE('',#183,#50);
 ...
@@ -69,10 +69,11 @@ Ein etwas komplexeres Beispiel, was die in einer STEP-Datei festgehaltene Geomet
 ...
 #183=CARTESIAN_POINT('',(0.,0.,30.));
 \end{lstlisting} 
+\end{lstfloat}
 
 Hierbei wird eine Linie im Raum entsprechend beschrieben, deren Anfangspunkt sich bei x = 0 mm, y = 0 mm und z = 0 mm befindet. Der Richtungsvektor dieser Linie zeigt in x = 1 mm, y = 0 mm und z = 0 mm und hat eine Länge von 10 mm.
 
-Es ist zu erkennen, dass sich die Entität der Klasse "`LINE"' (ID = 38) zusammensetzt aus zwei weiteren Entitäten. Die Beschreibung der Linie referenziert IDs der Instanzen der Klasse \textit{VECTOR} (ID = 50) sowie \textit{CARTESIAN\_POINT} (ID = 183). Der referenzierte Vektor bezieht sich wiederum auf eine Instanz der Klasse \textit{DIRECTION} (ID = 154), welche die Richtung des Vektors (x = 1 mm, y = 0 mm, z = 0 mm) beschreibt. Der Vektor hat, gegeben durch sein zweites Argument, eine Länge von 10,0 mm.
+Es ist zu erkennen, dass sich die Entität der Klasse \textit{LINE} (ID = 38) zusammensetzt aus zwei weiteren Entitäten. Die Beschreibung der Linie referenziert IDs der Instanzen der Klassen \textit{VECTOR} (ID = 50) sowie \textit{CARTESIAN\_POINT} (ID = 183). Der referenzierte Vektor bezieht sich wiederum auf eine Instanz der Klasse \textit{DIRECTION} (ID = 154), welche die Richtung des Vektors (x = 1 mm, y = 0 mm, z = 0 mm) beschreibt. Der Vektor hat, gegeben durch sein zweites Argument, eine Länge von 10,0 mm.
 
 Die Geometrie, die in einer STEP-DATEI beschrieben wird, setzt sich also, wie oben gezeigt, aus einzelnen Elementen zusammen. Es ist eine eindeutige und definierte Struktur zu erkennen, die ineinander verschachtelt ist. Somit ist gewährleistet, dass diese Struktur im Programm abgebildet werden kann, damit später diskretisierte Punkte den jeweiligen Flächen, die ebenfalls aus anderen Objekten bestehen, eindeutig zugeordnet werden können. 
 In Abschnitt \ref{sec:umsetzung} auf Seite \pageref{sec:string2entity} wird detailliert darauf eingegangen, wie aus den zeilenweisen Beschreibungen der einzelnen Entitäten der STEP-Datei Java-Objekte erzeugt werden.              

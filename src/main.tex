@@ -86,6 +86,7 @@
 
 % -- Grafikpaket
 \usepackage{graphicx}
+\usepackage{subcaption}
 
 % -- Verweise 
 % -- Verweise werden im Dokument klickbar
@@ -99,11 +100,11 @@
 	% Einfärben der Schrift
 	colorlinks = true,
 	% Farbe von Verknüpfungen im Text 
-	linkcolor=[RGB]{63 81 181},
+	linkcolor=[RGB]{0 0 0},
 	% Farbe von Quellenverweisen
-	citecolor= [RGB]{76 175 80},
+	citecolor= [RGB]{0 0 0},
 	% Farbe von URLs
-	urlcolor=[RGB]{0 76 153},
+	urlcolor=[RGB]{0 0 0},
 }
 
 % -- Verweise automatisieren
@@ -164,7 +165,13 @@
 % -- TikZ
 \usepackage{tikz}
 
+% -- Surface Plots ermöglichen
+\usepackage{pgfplots}
+
+
+
 % -- Listings
+\usepackage{float}
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Codebeispiel}
 \lstdefinestyle{customc}{
@@ -174,9 +181,14 @@
 	language=[x86masm]Assembler,
 	showstringspaces=false,
 	basicstyle=\ttfamily,
-	keywordstyle=\bfseries\color{green!40!black},
-	commentstyle=\itshape\color{purple!40!black}
+	keywordstyle=\bfseries\color{black},
+	commentstyle=\itshape\color{black}
 }
+
+\newfloat{lstfloat}{htbp}{lop}
+\floatname{lstfloat}{Codebeispiel}
+\def\lstfloatautorefname{Codebeispiel} % needed for hyperref/auroref
+
 
 %% DOKUMENT
 \begin{document}
